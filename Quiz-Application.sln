@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31229.75
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quiz-Application.Web", "Quiz-Application.Web\Quiz-Application.Web.csproj", "{27F0654A-CEA1-4185-B102-80A7F3EFA487}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quiz-Application.Services", "Quiz-Application.Services\Quiz-Application.Services.csproj", "{E0ED3BE6-724C-47AE-8C35-987D47030FE5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{27F0654A-CEA1-4185-B102-80A7F3EFA487}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27F0654A-CEA1-4185-B102-80A7F3EFA487}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27F0654A-CEA1-4185-B102-80A7F3EFA487}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27F0654A-CEA1-4185-B102-80A7F3EFA487}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0ED3BE6-724C-47AE-8C35-987D47030FE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0ED3BE6-724C-47AE-8C35-987D47030FE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0ED3BE6-724C-47AE-8C35-987D47030FE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0ED3BE6-724C-47AE-8C35-987D47030FE5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4309172A-1F59-46E0-9676-DFDFD205796F}
+	EndGlobalSection
+EndGlobal

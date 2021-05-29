@@ -1,0 +1,50 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+body {
+    background-color: #eee
+}
+
+label.radio {
+    cursor: pointer
+}
+
+    label.radio input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        visibility: hidden;
+        pointer-events: none
+    }
+
+    label.radio span {
+        padding: 4px 0px;
+        border: 1px solid red;
+        display: inline-block;
+        color: red;
+        width: 100px;
+        text-align: center;
+        border-radius: 3px;
+        margin-top: 7px;
+        text-transform: uppercase
+    }
+
+    label.radio input:checked + span {
+        border-color: red;
+        background-color: red;
+        color: #fff
+    }
+
+.ans {
+    margin-left: 36px !important
+}
+
+.btn:focus {
+    outline: 0 !important;
+    box-shadow: none !important
+}
+
+.btn:active {
+    outline: 0 !important;
+    box-shadow: none !important
+}
