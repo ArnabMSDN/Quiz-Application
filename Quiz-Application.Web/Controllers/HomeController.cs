@@ -6,9 +6,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Quiz_Application.Web.Authentication;
 
 namespace Quiz_Application.Web.Controllers
 {
+    [BasicAuthentication]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -18,6 +20,7 @@ namespace Quiz_Application.Web.Controllers
             _logger = logger;
         }
 
+        
         public IActionResult Index()
         {
             return View();
