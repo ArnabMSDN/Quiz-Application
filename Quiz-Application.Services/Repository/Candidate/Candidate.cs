@@ -4,51 +4,58 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace Quiz_Application.Services.Repository
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
+    public class Candidate<TEntity> : ICandidate<TEntity> where TEntity : BaseEntity
     {
         private readonly QuizDBContext _dbContext;
         private DbSet<TEntity> _dbSet;
-        public Repository(QuizDBContext dbContext)
+        public Candidate(QuizDBContext dbContext)
         {
             _dbContext = dbContext;
             _dbSet = dbContext.Set<TEntity>();
         }
-
-        public async Task<IEnumerable<TEntity>> GetAll()
+            
+        public async Task<IEnumerable<TEntity>> GetCandidateList()
         {
             return await _dbSet.ToListAsync();
         }
-
-        public async Task<TEntity> Get(int id)
+        public async Task<TEntity> GetCandidate(int id)
         {
             return await _dbSet.FindAsync(id);
         }
-        public async Task<int> Add(TEntity entity)
+        public async Task<IQueryable<TEntity>> IsValidCandidate(Expression<Func<TEntity, bool>> search = null)
+        {
+            IQueryable<TEntity> query=_dbSet;
+            if (search != null){ query =query.Where(search); }           
+            return query;
+        }
+
+        public async Task<int> InsertCandidate(TEntity entity)
         {
             int output = 0;
             _dbSet.Add(entity);
-            output=await _dbContext.SaveChangesAsync();
+            output = await _dbContext.SaveChangesAsync();
             return output;
         }
-                     
-        public async Task<int> Update(TEntity entity)
+
+        public async Task<int> UpdateCandidate(TEntity entity)
         {
             int output = 0;
             _dbSet.Update(entity);
             output = await _dbContext.SaveChangesAsync();
             return output;
         }
-
-        public async Task<int> Delete(TEntity entity)
+        public async Task<int> DeleteCandidate(TEntity entity)
         {
             int output = 0;
             _dbSet.Remove(entity);
             output = await _dbContext.SaveChangesAsync();
             return output;
         }
+
       
     }
 }

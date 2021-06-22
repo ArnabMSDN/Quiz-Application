@@ -8,7 +8,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Quiz_Application.Services;
+using Quiz_Application.Services.Repository;
+using Quiz_Application.Web.Authentication;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace Quiz_Application.Web
 {
@@ -25,10 +28,13 @@ namespace Quiz_Application.Web
         public void ConfigureServices(IServiceCollection services)
         {
             var connection = Configuration.GetConnectionString("QuizDBConnection");
-
-            services.AddMvc();
+            services.AddServices();
+            services.AddDistributedMemoryCache();
+            services.AddSession();           
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();                  
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddDbContext<QuizDBContext>(options => options.UseSqlServer(connection));
+            services.AddSingleton<BasicAuthentication>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,18 +48,16 @@ namespace Quiz_Application.Web
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            app.UseSession();
             app.UseStaticFiles();
-
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    //pattern: "{controller=Home}/{action=Index}/{id?}");
-                    pattern: "{controller=Account}/{action=Login}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");                    
             });
         }
     }

@@ -6,16 +6,24 @@ using System.Linq;
 using System.Threading.Tasks;
 using Quiz_Application.Web.Models;
 using Microsoft.Extensions.Logging;
+using Quiz_Application.Services;
+using Quiz_Application.Services.Repository;
+using Quiz_Application.Web.Common;
+using Quiz_Application.Web.Authentication;
 
 namespace Quiz_Application.Web.Controllers
 {   
     public class AccountController : Controller
-    {
+    {        
         private readonly ILogger<AccountController> _logger;
-        public AccountController(ILogger<AccountController> logger)
+        private readonly ICandidate<Services.Entities.Candidate> _candidate;
+
+        public AccountController(ILogger<AccountController> logger,ICandidate<Services.Entities.Candidate> Candidate)
         {
+            _candidate = Candidate;
             _logger = logger;
         }
+
         // GET: AccountController
         [HttpGet]
         public IActionResult Register()
@@ -34,14 +42,40 @@ namespace Quiz_Application.Web.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            return PartialView("_Login");
+            string _Action = string.Empty;
+            string _Controller = string.Empty;
+            string value = Convert.ToString(HttpContext.Session.GetString("AuthenticatedUser"));
+
+            if (string.IsNullOrEmpty(value))            
+                return PartialView("_Login");            
+            else                          
+                return RedirectToAction("Index", "Home");                      
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]       
         public async Task<IActionResult> Login([FromForm]LoginViewModel objCollection)
         {
-            return RedirectToAction("Index", "Home");
+            string _Action = string.Empty;
+            string _Controller = string.Empty;
+            string value =Convert.ToString(HttpContext.Session.GetString("AuthenticatedUser"));
+
+            if(string.IsNullOrEmpty(value))
+            {
+                IQueryable<Services.Entities.Candidate> candidate = await _candidate.IsValidCandidate(x => x.Email.Equals(objCollection.Email) && x.Password.Equals(objCollection.Password));
+                if (candidate.Any())
+                {
+                    HttpContext.Session.SetObjectAsJson("AuthenticatedUser", candidate.FirstOrDefault());
+                    _Controller = "Home";
+                    _Action = "Index";                   
+                }
+            }           
+            else
+            {
+                _Controller = "Account";
+                _Action = "Login";
+            }
+             return RedirectToAction(_Action, _Controller);
         }
 
     }
