@@ -20,4 +20,5 @@ namespace Quiz_Application.Web.Common
             return value == null ? default(T) : JsonConvert.DeserializeObject<T>(value);
         }
     }
+
 }

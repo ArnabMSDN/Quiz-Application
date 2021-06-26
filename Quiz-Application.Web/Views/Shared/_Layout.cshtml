@@ -33,10 +33,14 @@
                     <a href="#" class="w3-bar-item w3-button">Jane likes your post</a>
                 </div>
             </div>
-            <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="Sign out">
-                <img src="https://www.w3schools.com/w3images/avatar2.png" class="w3-circle" style="height:23px;width:23px" alt="Avatar">
-            </a>
-
+            <div class="w3-dropdown-hover w3-hide-small w3-right">
+                <div class="w3-button w3-padding-large  w3-hover-white" title="Notifications">
+                    <img src="https://www.w3schools.com/w3images/avatar2.png" class="w3-circle" style="height:23px;width:23px" alt="Avatar">
+                </div>
+                <div class="w3-dropdown-content w3-card-4 w3-bar-block w3-left" style="width:300px">
+                    <a asp-controller="Account" asp-action="Logout" class="w3-bar-item w3-button" title="Sign out">Sign out</a>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -59,7 +63,7 @@
     <footer class="w3-container w3-theme-d5">
         <h6>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></h6>
     </footer>
-
+    @*<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>*@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

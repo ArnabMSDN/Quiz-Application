@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Quiz_Application.Services.Entities.Candidate
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -14,26 +15,29 @@
                     <h4 class="w3-center">My Profile</h4>
                     <p class="w3-center"><img src="https://www.w3schools.com/w3images/avatar3.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
                     <hr>
-                    <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> Designer, UI</p>
-                    <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> London, UK</p>
-                    <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> April 1, 1988</p>
+                    <p><i class="fa fa-address-card fa-fw w3-margin-right w3-text-theme"></i>@Model.Name     (@Model.Candidate_ID)</p>
+                    <p><i class="fa fa-phone fa-fw w3-margin-right w3-text-theme"></i>@Model.Phone</p>
+                    <p><i class="fa fa-paper-plane fa-fw w3-margin-right w3-text-theme"></i> @Model.Email</p>
                 </div>
             </div>
             <br>
 
             <!-- Interests -->
-            <div class="w3-card w3-round w3-white w3-hide-small">
+            <div class="w3-card w3-round w3-white">
                 <div class="w3-container">
                     <p>Change Profile Photo</p>
-                    <p>
-                        <div class="custom-file">
-                            <input  class="form-control custom-file-input" />
-                            <label class="custom-file-label">Choose file...</label>
+                    <div class="file-upload">
+                        <div class="file-select">
+                            <div class="file-select-button" id="fileName">Choose file</div>
+                            <div class="file-select-name" id="noFile">No file chosen...</div>
+                            <input type="file" name="chooseFile" id="chooseFile">
                         </div>
-                    </p>
+                    </div>
+                    <br />
                 </div>
             </div>
             <br>
+
             <!-- Alert Box -->
             <div class="w3-container w3-display-container w3-round w3-theme-l4 w3-border w3-theme-border w3-margin-bottom w3-hide-small">
                 <span onclick="this.parentElement.style.display='none'" class="w3-button w3-theme-l3 w3-display-topright">
@@ -52,9 +56,17 @@
                 <div class="w3-col m12">
                     <div class="w3-card w3-round w3-white">
                         <div class="w3-container w3-padding">
-                            <h6 class="w3-opacity">Social Media template by w3.css</h6>
-                            <p contenteditable="true" class="w3-border w3-padding">Status: Feeling Blue</p>
-                            <button type="button" class="w3-button w3-theme"><i class="fa fa-pencil"></i>  Post</button>
+                            <h6 class="w3-opacity">You will get 1 point for each correct answer. At the end of the Quiz, your total score will be displayed.</h6>
+                            <p>
+                                <select class="form-control" id="ddlExam">
+                                    <option selected>Select Exam</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                </select>
+                            </p>
+                            <button type="button" class="w3-button w3-theme"><i class="fa fa-pencil"></i>  Start</button>
                         </div>
                     </div>
                 </div>
@@ -94,7 +106,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="d-flex flex-row justify-content-between align-items-center p-3 bg-white"><button class="btn btn-primary d-flex align-items-center btn-danger" type="button"><i class="fa fa-angle-left mt-1 mr-1"></i>&nbsp;previous</button><button class="btn btn-primary border-success align-items-center btn-success" type="button">Next<i class="fa fa-angle-right ml-2"></i></button></div>
+                        <div class="d-flex flex-row justify-content-between align-items-center p-3 bg-white"><button class="w3-button w3-theme" type="button"><i class="fa fa-angle-left mt-1 mr-1"></i>&nbsp;previous</button><button class="w3-button w3-theme" type="button">Next<i class="fa fa-angle-right ml-2"></i></button></div>
                     </div>
                 </div>
             </div>
@@ -129,7 +141,7 @@
 
         <!-- End Grid -->
     </div>
-    
+
     <!-- End Page Container -->
 </div>
 <br>

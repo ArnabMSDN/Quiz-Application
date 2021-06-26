@@ -10,9 +10,11 @@ using Quiz_Application.Services;
 using Quiz_Application.Services.Repository;
 using Quiz_Application.Web.Common;
 using Quiz_Application.Web.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Quiz_Application.Web.Controllers
-{   
+{
+    
     public class AccountController : Controller
     {        
         private readonly ILogger<AccountController> _logger;
@@ -26,6 +28,7 @@ namespace Quiz_Application.Web.Controllers
 
         // GET: AccountController
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return PartialView("_Register");
@@ -40,6 +43,7 @@ namespace Quiz_Application.Web.Controllers
 
         // GET: AccountController
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             string _Action = string.Empty;
@@ -52,7 +56,7 @@ namespace Quiz_Application.Web.Controllers
                 return RedirectToAction("Index", "Home");                      
         }
 
-        [HttpPost]
+        [HttpPost]        
         [ValidateAntiForgeryToken]       
         public async Task<IActionResult> Login([FromForm]LoginViewModel objCollection)
         {
@@ -77,6 +81,20 @@ namespace Quiz_Application.Web.Controllers
             }
              return RedirectToAction(_Action, _Controller);
         }
-
+        
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            try
+            {               
+                foreach (var cookie in Request.Cookies.Keys) { Response.Cookies.Delete(cookie); }
+                HttpContext.Session.Clear();
+                return RedirectToAction("Login", "Account");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception (ex.Message, ex.InnerException);
+            }
+        }
     }
 }
