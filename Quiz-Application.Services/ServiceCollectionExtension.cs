@@ -13,8 +13,8 @@ namespace Quiz_Application.Services
    public static class ServiceCollectionExtension
     {        
        public static IServiceCollection AddServices(this IServiceCollection services)
-        {
+       {
           return services.AddScoped<ICandidate<Entities.Candidate>, Candidate<Entities.Candidate>>();
-        }
+       }
     }
 }

@@ -10,15 +10,15 @@ using Microsoft.AspNetCore.Routing;
 
 namespace Quiz_Application.Web.Authentication
 {
-  public class BasicAuthentication : ActionFilterAttribute
-    {      
-     public override void OnActionExecuting(ActionExecutingContext context)
-     {            
-        string value = Convert.ToString(context.HttpContext.Session.GetString("AuthenticatedUser"));
-        if (ReferenceEquals(value, null))
+    public class BasicAuthentication : ActionFilterAttribute
+    {
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
-          context.Result = new RedirectToRouteResult(new RouteValueDictionary{{ "Controller","Account" },{ "Action", "Login" } });
-        }       
+            string value = Convert.ToString(context.HttpContext.Session.GetString("AuthenticatedUser"));
+            if (ReferenceEquals(value, null))
+            {
+                context.Result = new RedirectToRouteResult(new RouteValueDictionary { { "Controller", "Account" }, { "Action", "Login" } });
+            }
         }
     }
 }

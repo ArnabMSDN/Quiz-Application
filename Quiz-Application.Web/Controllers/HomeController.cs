@@ -7,10 +7,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Quiz_Application.Web.Authentication;
+using Microsoft.AspNetCore.Http;
+using Quiz_Application.Web.Common;
+using Quiz_Application.Services.Entities;
 
 namespace Quiz_Application.Web.Controllers
 {
-    [BasicAuthentication]
+   
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -20,10 +23,12 @@ namespace Quiz_Application.Web.Controllers
             _logger = logger;
         }
 
-        
+        [BasicAuthentication]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Index()
         {
-            return View();
+            Candidate objCandidate= HttpContext.Session.GetObjectFromJson<Candidate>("AuthenticatedUser");
+            return View(objCandidate);
         }
 
         public IActionResult Privacy()
