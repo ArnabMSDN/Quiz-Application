@@ -4,25 +4,52 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Quiz_Application.Web.Authentication;
+using Quiz_Application.Services.Entities;
+using Quiz_Application.Services.Repository.Exam;
+using System.Net;
 
 namespace Quiz_Application.Web.Controllers
 {
+    [BasicAuthentication]
     public class ExamController : Controller
     {
+        private readonly ILogger<ExamController> _logger;
+        private readonly IExam<Services.Entities.Exam> _exam;
+        public ExamController(ILogger<ExamController> logger, IExam<Services.Entities.Exam> exam)
+        {
+            _logger = logger;
+            _exam = exam;
+        }
         // GET: ExamController
-        public ActionResult Index()
+        public IActionResult Index()
         {
             return View();
         }
 
         // GET: ExamController/Details/5
-        public ActionResult Details(int id)
+        public IActionResult Details(int id)
         {
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ExamList()
+        {           
+            try
+            {
+                IEnumerable<Exam> lst = await _exam.GetExamList();               
+                return Ok(lst.ToList());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex.InnerException);
+            }
+            finally { }
+        }
         // GET: ExamController/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return View();
         }
@@ -30,7 +57,7 @@ namespace Quiz_Application.Web.Controllers
         // POST: ExamController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public IActionResult Create(IFormCollection collection)
         {
             try
             {
@@ -43,7 +70,7 @@ namespace Quiz_Application.Web.Controllers
         }
 
         // GET: ExamController/Edit/5
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
             return View();
         }
@@ -51,7 +78,7 @@ namespace Quiz_Application.Web.Controllers
         // POST: ExamController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public IActionResult Edit(int id, IFormCollection collection)
         {
             try
             {
@@ -64,7 +91,7 @@ namespace Quiz_Application.Web.Controllers
         }
 
         // GET: ExamController/Delete/5
-        public ActionResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             return View();
         }
@@ -72,7 +99,7 @@ namespace Quiz_Application.Web.Controllers
         // POST: ExamController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public IActionResult Delete(int id, IFormCollection collection)
         {
             try
             {
@@ -83,5 +110,6 @@ namespace Quiz_Application.Web.Controllers
                 return View();
             }
         }
+
     }
 }

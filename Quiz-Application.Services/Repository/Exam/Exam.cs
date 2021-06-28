@@ -6,33 +6,33 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
 
-namespace Quiz_Application.Services.Repository.Candidate
+namespace Quiz_Application.Services.Repository.Exam
 {
-    public class Candidate<TEntity> : ICandidate<TEntity> where TEntity : BaseEntity
+    public class Exam<TEntity> : IExam<TEntity> where TEntity : BaseEntity
     {
         private readonly QuizDBContext _dbContext;
         private DbSet<TEntity> _dbSet;
-        public Candidate(QuizDBContext dbContext)
+        public Exam(QuizDBContext dbContext)
         {
             _dbContext = dbContext;
             _dbSet = dbContext.Set<TEntity>();
         }            
-        public async Task<IEnumerable<TEntity>> GetCandidateList()
+        public async Task<IEnumerable<TEntity>> GetExamList()
         {
             return await _dbSet.ToListAsync();
         }
-        public async Task<TEntity> GetCandidate(int id)
+        public async Task<TEntity> GetExam(int id)
         {
             return await _dbSet.FindAsync(id);
         }
-        public async Task<IQueryable<TEntity>> SearchCandidate(Expression<Func<TEntity, bool>> search = null)
+        public async Task<IQueryable<TEntity>> SearchExam(Expression<Func<TEntity, bool>> search = null)
         {
             IQueryable<TEntity> query=_dbSet;
             if (search != null){ query =query.Where(search); }           
             return query;
         }
 
-        public async Task<int> InsertCandidate(TEntity entity)
+        public async Task<int> InsertExam(TEntity entity)
         {
             int output = 0;
             _dbSet.Add(entity);
@@ -40,14 +40,14 @@ namespace Quiz_Application.Services.Repository.Candidate
             return output;
         }
 
-        public async Task<int> UpdateCandidate(TEntity entity)
+        public async Task<int> UpdateExam(TEntity entity)
         {
             int output = 0;
             _dbSet.Update(entity);
             output = await _dbContext.SaveChangesAsync();
             return output;
         }
-        public async Task<int> DeleteCandidate(TEntity entity)
+        public async Task<int> DeleteExam(TEntity entity)
         {
             int output = 0;
             _dbSet.Remove(entity);

@@ -11,6 +11,7 @@ using Quiz_Application.Services.Repository;
 using Quiz_Application.Web.Common;
 using Quiz_Application.Web.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Quiz_Application.Services.Repository.Candidate;
 
 namespace Quiz_Application.Web.Controllers
 {
@@ -66,7 +67,7 @@ namespace Quiz_Application.Web.Controllers
 
             if(string.IsNullOrEmpty(value))
             {
-                IQueryable<Services.Entities.Candidate> candidate = await _candidate.IsValidCandidate(x => x.Email.Equals(objCollection.Email) && x.Password.Equals(objCollection.Password));
+                IQueryable<Services.Entities.Candidate> candidate = await _candidate.SearchCandidate(x => x.Email.Equals(objCollection.Email) && x.Password.Equals(objCollection.Password));
                 if (candidate.Any())
                 {
                     HttpContext.Session.SetObjectAsJson("AuthenticatedUser", candidate.FirstOrDefault());
