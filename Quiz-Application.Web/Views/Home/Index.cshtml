@@ -3,6 +3,7 @@
     ViewData["Title"] = "Home Page";
 }
 
+@Html.HiddenFor(c => c.Candidate_ID)
 <!-- Page Container -->
 <div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
     <!-- The Grid -->
@@ -13,9 +14,20 @@
             <div class="w3-card w3-round w3-white">
                 <div class="w3-container">
                     <h4 class="w3-center">My Profile</h4>
-                    <p class="w3-center"><img src="https://www.w3schools.com/w3images/avatar3.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+                    <p class="w3-center">
+                        @if (@Model.ImgPath != null)
+                        {
+                          <img src="~/UploadedFiles/@Model.ImgPath" class="w3-circle" style="height:106px;width:106px" alt="Avatar" id="imgProfile">
+                        }
+                        else
+                        {
+                          <img src="https://www.w3schools.com/w3images/avatar3.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar" id="imgProfile">
+                        }
+                    </p>
                     <hr>
-                    <p><i class="fa fa-address-card fa-fw w3-margin-right w3-text-theme"></i>@Model.Name     (@Model.Candidate_ID)</p>
+                    <p>
+                        <i class="fa fa-address-card fa-fw w3-margin-right w3-text-theme"></i>@Model.Name     (@Model.Candidate_ID)
+                    </p>
                     <p><i class="fa fa-phone fa-fw w3-margin-right w3-text-theme"></i>@Model.Phone</p>
                     <p><i class="fa fa-paper-plane fa-fw w3-margin-right w3-text-theme"></i> @Model.Email</p>
                 </div>
@@ -27,15 +39,15 @@
                 <div class="w3-container">
                     <p>Change Profile Photo</p>
                     <p>
-                        <div class="file-upload">
-                            <div class="file-select">
-                                <div class="file-select-button" id="fileName">Choose file</div>
-                                <div class="file-select-name" id="noFile">No file chosen...</div>
-                                <input type="file" name="chooseFile" id="chooseFile">
-                            </div>
-                        </div>
+                       <div class="file-upload">
+                          <div class="file-select">
+                             <div class="file-select-button" id="fileName">Choose file</div>
+                             <div class="file-select-name" id="noFile">No file chosen...</div>
+                             <input type="file" name="chooseFile" id="chooseFile" onchange="ShowImagePreview(this);" accept="image/*">
+                          </div>
+                       </div>
                     </p>
-                    <p><button type="button" class="w3-button w3-theme"><i class="fa fa-upload"></i>  Save</button></p>
+                    <p><button type="button" class="w3-button w3-theme" onclick="SaveImage()"><i class="fa fa-upload"></i>  Save</button></p>
                 </div>
             </div>
             <br>
@@ -60,13 +72,7 @@
                         <div class="w3-container w3-padding">
                             <h6 class="w3-opacity">You will get 1 point for each correct answer. At the end of the Quiz, your total score will be displayed.</h6>
                             <p>
-                                <select class="form-control" id="ddlExam">
-                                    <option selected>Select Exam</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                </select>
+                                <select class="form-control" id="ddlExam"></select>
                             </p>
                             <button type="button" class="w3-button w3-theme"><i class="fa fa-pencil"></i>  Start</button>
                         </div>
