@@ -2,7 +2,8 @@
 // for details on configuring this project to bundle and minify static web assets.
 // Write your JavaScript code.
 
-$(document).ready(function () {
+$(document).ready(function () { 
+  $('#pnlQuestion').hide();
   $.ajax({
      type: "GET",
      url: "/Exam/ExamList",
@@ -20,6 +21,11 @@ $('#chooseFile').change(function () {
     $('#noFile').text(file);
 });
 
+//Start the Exam
+$('#btnStart').click(function () {   
+    $('#pnlQuestion').show(250);
+});
+
 function SaveImage() {
    var formData = new FormData();    
    var CandidateID = $('#Candidate_ID').val();
@@ -33,8 +39,7 @@ function SaveImage() {
       processData: false,
       contentType: false,
       success: function (response) {
-          console.log(response);
-         // window.location.href = '/Home/Index';
+          console.log(response);       
       }
    });
 }
