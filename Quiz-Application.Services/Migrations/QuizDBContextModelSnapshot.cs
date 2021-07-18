@@ -16,7 +16,7 @@ namespace Quiz_Application.Services.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.6")
+                .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Quiz_Application.Services.Entities.Answer", b =>
@@ -74,7 +74,7 @@ namespace Quiz_Application.Services.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("varchar(250)");
 
-                    b.Property<string>("ImgPath")
+                    b.Property<string>("ImgFile")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -90,10 +90,13 @@ namespace Quiz_Application.Services.Migrations
                         .HasColumnType("varchar(250)");
 
                     b.Property<string>("Password")
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(250)");
 
                     b.Property<string>("Phone")
                         .HasColumnType("varchar(20)");
+
+                    b.Property<string>("Roles")
+                        .HasColumnType("varchar(100)");
 
                     b.HasKey("Sl_No");
 

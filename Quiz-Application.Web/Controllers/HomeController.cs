@@ -32,7 +32,7 @@ namespace Quiz_Application.Web.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Index()
         {
-            Candidate objCandidate = HttpContext.Session.GetObjectFromJson<Candidate>("AuthenticatedUser"); 
+            Candidate objCandidate = HttpContext.Session.GetObjectFromJson<Candidate>("AuthenticatedUser");
             return View(objCandidate);
         }
 
@@ -44,30 +44,39 @@ namespace Quiz_Application.Web.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-           return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
         [HttpPost]
         public async Task<IActionResult> SaveImage()
-        {           
-           if (Request.Form.Files.Any())
-           {
-               string candidateID = Convert.ToString(Request.Form["Candidate-ID"]);
-               var file = Request.Form.Files["Candidate-Img"];
+        {
+            try
+            {
+                if (Request.Form.Files.Any())
+                {
+                    string candidateID = Convert.ToString(Request.Form["Candidate-ID"]);
+                    var file = Request.Form.Files["Candidate-Img"];
 
-               IQueryable<Services.Entities.Candidate> candidate = await _candidate.SearchCandidate(x => x.Candidate_ID == candidateID); 
-                if(candidate.Any())
-                {                   
-                    string UploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "UploadedFiles");
-                    string UniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
-                    string UploadPath = Path.Combine(UploadFolder, UniqueFileName);                    
-                    var item = candidate.FirstOrDefault();
-                    item.ImgPath = UniqueFileName;
-                    await _candidate.UpdateCandidate(item);
-                    await file.CopyToAsync(new FileStream(UploadPath, FileMode.Create));
-                }                               
+                    IQueryable<Services.Entities.Candidate> candidate = await _candidate.SearchCandidate(x => x.Candidate_ID == candidateID.DecodeBase64());
+                    if (candidate.Any())
+                    {
+                        string UploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "UploadedFiles");
+                        string UniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                        string UploadPath = Path.Combine(UploadFolder, UniqueFileName);
+                        var item = candidate.FirstOrDefault();
+                        item.ImgFile = UniqueFileName;
+                        await _candidate.UpdateCandidate(item);
+                        await file.CopyToAsync(new FileStream(UploadPath, FileMode.Create));
+                    }
+                }
+                return Json(HttpStatusCode.OK);
             }
-            return Json(HttpStatusCode.OK);
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex.InnerException);
+            }
+            finally
+            { }
         }
 
     }

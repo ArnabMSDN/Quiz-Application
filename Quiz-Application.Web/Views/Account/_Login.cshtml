@@ -2,67 +2,89 @@
 
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Sign in</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-  <style>
-        .login-form {
-            width: 340px;
-            margin: 50px auto;
-            font-size: 15px;
-        }
-
-            .login-form form {
-                margin-bottom: 15px;
-                background: #f7f7f7;
-                box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-                padding: 30px;
-            }
-
-            .login-form h2 {
-                margin: 0 0 15px;
-            }
-
-        .form-control, .btn {
-            min-height: 38px;
-            border-radius: 2px;
-        }
-
-        .btn {
-            font-size: 15px;
-            font-weight: bold;
-        }
-    </style>
+    <title>Login V19</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/animsition/css/animsition.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/daterangepicker/daterangepicker.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/css/util.css">
+    <link rel="stylesheet" type="text/css" href="~/css/main.css">
+    <!--===============================================================================================-->
 </head>
 <body>
-  <div class="login-form">
-      <form asp-action="Login" asp-controller="Account" method="post">
-          <h2 class="text-center">Sign in</h2>         
-         <div class="form-group">
-              <label asp-for="Email" class="control-label"></label>
-              <input asp-for="Email" class="form-control" placeholder="Email" required="required" />
-              <span asp-validation-for="Email" class="text-danger"></span>
-          </div>
-         <div class="form-group">           
-              <label asp-for="Password" class="control-label"></label>
-              <input asp-for="Password" class="form-control" placeholder="Password" required="required" />
-              <span asp-validation-for="Password" class="text-danger"></span>
-          </div>
-         <div class="form-group">
-              <button type="submit" class="btn btn-primary btn-block">Log in</button>
-          </div>
-         <div class="clearfix">
-             <label class="float-left form-check-label"><input type="checkbox" asp-for="RememberMe" required="required"/> @Html.DisplayNameFor(model => model.RememberMe)</label>
-             <a href="#" class="float-right">Forgot Password?</a>
-         </div>
-      </form>
-    <p class="text-center"><a asp-controller="Account" asp-action="Register">Create an Account</a></p>
-  </div>
+
+  <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-50">
+                <form class="login100-form validate-form" asp-action="Login" asp-controller="Account" method="post">
+                    <span class="login100-form-title p-b-33">
+                        Candidate Login
+                    </span>
+
+                    <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+                        <input asp-for="Email" class="input100" type="text" name="email" placeholder="Email">
+                        <span asp-for="Email" class="focus-input100-1"></span>
+                        <span asp-for="Email" class="focus-input100-2"></span>
+                    </div>
+
+                    <div class="wrap-input100 rs1 validate-input" data-validate="Password is required">
+                        <input asp-for="Password" class="input100" type="password" name="password" placeholder="Password">
+                        <span asp-validation-for="Password" class="focus-input100-1"></span>
+                        <span asp-validation-for="Password" class="focus-input100-2"></span>
+                    </div>
+
+                    <div class="container-login100-form-btn m-t-20">
+                        <button type="submit" class="login100-form-btn">Sign in</button>
+                    </div>
+
+                    <div class="text-center p-t-45 p-b-4">
+                        <span class="txt1">Forgot</span>
+                        <a href="#" class="txt2 hov1">Username / Password?</a>
+                    </div>
+
+                    <div class="text-center">
+                        <span class="txt1">Create an account?</span>
+                        <a asp-controller="Account" asp-action="Register" class="txt2 hov1">Sign up</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+ <!--===============================================================================================-->
+ <script src="~/vendor/jquery/jquery-3.2.1.min.js"></script>
+ <!--===============================================================================================-->
+ <script src="~/vendor/animsition/js/animsition.min.js"></script>
+ <!--===============================================================================================-->
+ <script src="~/vendor/bootstrap/js/popper.js"></script>
+ <script src="~/vendor/bootstrap/js/bootstrap.min.js"></script>
+ <!--===============================================================================================-->
+ <script src="~/vendor/select2/select2.min.js"></script>
+ <!--===============================================================================================-->
+ <script src="~/vendor/daterangepicker/moment.min.js"></script>
+ <script src="~/vendor/daterangepicker/daterangepicker.js"></script>
+ <!--===============================================================================================-->
+ <script src="~/vendor/countdowntime/countdowntime.js"></script>
+ <!--===============================================================================================-->
+ <script src="~/js/main.js"></script>
+
 </body>
 </html>
 

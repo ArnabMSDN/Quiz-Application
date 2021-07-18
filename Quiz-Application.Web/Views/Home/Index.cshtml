@@ -16,9 +16,9 @@
                 <div class="w3-container">
                     <h4 class="w3-center">My Profile</h4>
                     <p class="w3-center">
-                        @if (@Model.ImgPath != null)
+                        @if (@Model.ImgFile != null)
                         {
-                            <img src="~/UploadedFiles/@Model.ImgPath" class="w3-circle" style="height:106px;width:106px" alt="Avatar" id="imgProfile">
+                            <img src="~/UploadedFiles/@Model.ImgFile" class="w3-circle" style="height:106px;width:106px" alt="Avatar" id="imgProfile">
                         }
                         else
                         {
