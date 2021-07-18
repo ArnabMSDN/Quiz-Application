@@ -41,7 +41,22 @@ namespace Quiz_Application.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register([FromForm] RegisterViewModel objCollection)
         {
-            return RedirectToAction("Index", "Home");
+            Services.Entities.Candidate _objcandidate = new Services.Entities.Candidate()
+            {
+                Name = objCollection.Name,
+                Email = objCollection.Email,
+                Phone = objCollection.Phone,
+                Candidate_ID = objCollection.Candidate_ID,
+                Roles = "User",
+                Password = objCollection.Password.EncodeBase64(),
+                CreatedBy = "SYSTEM",
+                CreatedOn = DateTime.Now
+            };
+            
+
+
+            int i= await _candidate.InsertCandidate(_objcandidate);
+            return RedirectToAction("Login", "Account");
         }
 
         // GET: AccountController
