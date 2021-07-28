@@ -6,7 +6,7 @@
 @Html.HiddenFor(c => c.Candidate_ID)
 
 <!-- Page Container -->
-<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">    
+<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
     <!-- The Grid -->
     <div class="w3-row">
         <!-- Left Column -->
@@ -27,30 +27,35 @@
                     </p>
                     <hr>
                     <p>
-                        <i class="fa fa-address-card fa-fw w3-margin-right w3-text-theme"></i>@Model.Name     (@Model.Candidate_ID)
+                        <i class="fa fa-address-card fa-fw w3-margin-right w3-text-theme"></i>@Model.Candidate_ID
+                    </p>
+                    <p>
+                        <i class="fa fa-user fa-fw w3-margin-right w3-text-theme"></i>@Model.Name
                     </p>
                     <p><i class="fa fa-phone fa-fw w3-margin-right w3-text-theme"></i>@Model.Phone</p>
-                    <p><i class="fa fa-paper-plane fa-fw w3-margin-right w3-text-theme"></i> @Model.Email</p>                    
-                </div>
-            </div>
-            <br />
-            <!-- Interests -->
-            <div class="w3-card w3-round w3-white">
-                <div class="w3-container">
-                    <p>Edit profile picture</p>
-                    <p>
-                        <div class="file-upload">
-                            <div class="file-select">
-                                <div class="file-select-button" id="fileName">Choose file</div>
-                                <div class="file-select-name" id="noFile">No file chosen...</div>
-                                <input type="file" name="chooseFile" id="chooseFile" onchange="ShowImagePreview(this);" accept="image/*">
+                    <p><i class="fa fa-paper-plane fa-fw w3-margin-right w3-text-theme"></i>@Model.Email</p>
+                    @*<p><i class="fa fa-upload fa-fw w3-margin-right w3-text-theme"></i>Edit profile picture</p>
+                        <p>
+                            <div class="file-upload">
+                                <div class="file-select">
+                                    <div class="file-select-button" id="fileName">Choose file</div>
+                                    <div class="file-select-name" id="noFile">No file chosen...</div>
+                                    <input type="file" name="chooseFile" id="chooseFile" onchange="ShowImagePreview(this);" accept="image/*">
+                                </div>
                             </div>
-                        </div>
-                    </p>
-                    <p><button type="button" class="w3-button w3-theme" onclick="SaveImage()"><i class="fa fa-upload"></i>  Save</button></p>
+                        </p>
+                        <p><button type="button" class="w3-button w3-theme" onclick="SaveImage()"><i class="fa fa-save"></i>  Save</button></p>*@
                 </div>
             </div>
             <br />
+            <!-- Alert Box -->
+            <div class="w3-container w3-display-container w3-round w3-theme-l4 w3-border w3-theme-border w3-margin-bottom w3-hide-small">
+                <span onclick="this.parentElement.style.display='none'" class="w3-button w3-theme-l3 w3-display-topright">
+                    <i class="fa fa-remove"></i>
+                </span>
+                <p><strong>Please Note !</strong></p>
+                <p>The test is not official, it's just a nice way to see how much you know, or don't know, about the skill.</p>
+            </div>
             <!-- End Left Column -->
         </div>
 
@@ -60,49 +65,35 @@
                 <div class="w3-col m12">
                     <div class="w3-card w3-round w3-white">
                         <div class="w3-container w3-padding">
-                            <h6 class="w3-opacity">You will get 1 point for each correct answer. At the end of the Quiz, your total score will be displayed.</h6>
-                            <p>
-                                <select class="form-control" id="ddlExam"></select>
-                            </p>
-                            <button type="button" id="btnStart" class="w3-button w3-theme"><i class="fa fa-pencil"></i>  Start</button>
+                            <h6 class="w3-opacity">Select your skill & start the Quiz. Good luck !</h6>
+                            <select class="w3-select w3-border" id="ddlExam"></select>
+                            <p><button type="button" id="btnStart" class="w3-button w3-theme"><i class="fa fa-pencil"></i>  Start</button></p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="w3-container w3-card w3-white w3-round w3-margin" style="display: none;" id="pnlQuestion">
-                <div class="d-flex justify-content-center row">
-                    <div class="col-md-12 col-lg-12">
-                        <div class="question bg-white p-3 border-bottom">
-                            <div class="d-flex flex-row justify-content-between align-items-center mcq">
-                                <h3>MCQ Quiz</h3><span>(5 of 20)</span>
-                            </div>
-                        </div>
-                        <div class="question bg-white p-3 border-bottom">
-                            <div class="d-flex flex-row align-items-center question-title">
-                                <h4 class="text-danger">Q.</h4>
-                                <h4 class="mt-1 ml-2">Which of the following country has largest population?</h4>
-                            </div>
+            <div class="w3-container w3-card w3-white w3-round w3-margin">
+                <br>
+                <span class="w3-right w3-opacity">(5 of 20)</span>
+                <h3>MCQ Quiz</h3>
+                <hr class="w3-clear">
+                <h4 style="color:red;">Q. Which of the following country has largest population ?</h4>     
+                <p>
+                    <div style="padding:5px;">
+                        <input class="w3-radio" type="radio" name="gender" value="male">
+                        <label>Male</label>
 
-                            <div class="ans ml-4">
-                                <label class="radio">
-                                    <input type="radio" name="brazil" value="brazil"> <span>Brazil</span>
-                                </label>
-                                <label class="radio">
-                                    <input type="radio" name="Germany" value="Germany"> <span>Germany</span>
-                                </label>
-                                <label class="radio">
-                                    <input type="radio" name="Indonesia" value="Indonesia"> <span>Indonesia</span>
-                                </label>
-                                <label class="radio">
-                                    <input type="radio" name="Russia" value="Russia"> <span>Russia</span>
-                                </label>
-                            </div>
-                            <br />
-                        </div>
-                        <div class="d-flex flex-row justify-content-between align-items-center p-3 bg-white"><button class="w3-button w3-theme" type="button"><i class="fa fa-angle-left mt-1 mr-1"></i>&nbsp;previous</button><button class="w3-button w3-theme" type="button">Next<i class="fa fa-angle-right ml-2"></i></button></div>
-                    </div>
-                </div>
+                        <input class="w3-radio" type="radio" name="gender" value="female" style=" margin-left: 20px;">
+                        <label>Female</label>
+
+                        <input class="w3-radio" type="radio" name="gender" value="" style=" margin-left: 20px;">
+                        <label>Don't know (Disabled)</label>
+                    </div>                   
+                </p>              
+                <hr class="w3-clear">
+                <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom w3-left"><i class="fa fa-thumbs-up"></i> Previous</button>
+                <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom w3-right"><i class="fa fa-comment"></i> Next</button>
             </div>
             <!-- End Middle Column -->
         </div>

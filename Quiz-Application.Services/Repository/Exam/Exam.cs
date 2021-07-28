@@ -28,7 +28,10 @@ namespace Quiz_Application.Services.Repository.Exam
         public async Task<IQueryable<TEntity>> SearchExam(Expression<Func<TEntity, bool>> search = null)
         {
             IQueryable<TEntity> query=_dbSet;
-            if (search != null){ query =query.Where(search); }           
+            if (search != null)
+            { 
+                query =query.Where(search); 
+            }           
             return query;
         }
 

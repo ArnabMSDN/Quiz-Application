@@ -1,23 +1,17 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Quiz_Application.Web.Models;
-using Microsoft.Extensions.Logging;
-using Quiz_Application.Services;
-using Quiz_Application.Services.Repository;
 using Quiz_Application.Web.Common;
-using Quiz_Application.Web.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Quiz_Application.Services.Repository.Candidate;
-using System.Security.Claims;
-
+using Quiz_Application.Web.Enums;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Quiz_Application.Web.Controllers
 {
-
     public class AccountController : Controller
     {
         private readonly ILogger<AccountController> _logger;
@@ -41,22 +35,33 @@ namespace Quiz_Application.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register([FromForm] RegisterViewModel objCollection)
         {
-            Services.Entities.Candidate _objcandidate = new Services.Entities.Candidate()
+            int i = 0;
+            if(ModelState.IsValid)
             {
-                Name = objCollection.Name,
-                Email = objCollection.Email,
-                Phone = objCollection.Phone,
-                Candidate_ID = objCollection.Candidate_ID,
-                Roles = "User",
-                Password = objCollection.Password.EncodeBase64(),
-                CreatedBy = "SYSTEM",
-                CreatedOn = DateTime.Now
-            };
-            
+                Services.Entities.Candidate _objcandidate = new Services.Entities.Candidate()
+                {
+                    Name = objCollection.Name,
+                    Email = objCollection.Email,
+                    Phone = objCollection.Phone,
+                    Candidate_ID = objCollection.Candidate_ID,
+                    Roles = "User",
+                    Password = objCollection.Password.EncodeBase64(),
+                    CreatedBy = "SYSTEM",
+                    CreatedOn = DateTime.Now
+                };
 
+                i = await _candidate.InsertCandidate(_objcandidate);
 
-            int i= await _candidate.InsertCandidate(_objcandidate);
-            return RedirectToAction("Login", "Account");
+                if (i > 0)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+                else
+                { 
+                    ViewBag.Alert = CommonService.ShowAlert(Alerts.Danger, "Unknown error"); 
+                }
+            }                                       
+            return PartialView("_Register");            
         }
 
         // GET: AccountController
@@ -94,32 +99,36 @@ namespace Quiz_Application.Web.Controllers
                 string _Controller = string.Empty;
                 string value = Convert.ToString(HttpContext.Session.GetString("AuthenticatedUser"));
 
-                if (string.IsNullOrEmpty(value))
+                if(ModelState.IsValid)
                 {
-                    IQueryable<Services.Entities.Candidate> candidate = await _candidate.SearchCandidate(x => x.Email.Equals(objCollection.Email) && x.Password.Equals(objCollection.Password));
-                    if (candidate.Any())
+                    if (string.IsNullOrEmpty(value))
                     {
-                        Services.Entities.Candidate _candidate = new Services.Entities.Candidate();
-                        _candidate = candidate.FirstOrDefault();
-                        _candidate.Password = _candidate.Password.EncodeBase64();
-                        HttpContext.Session.SetObjectAsJson("AuthenticatedUser", _candidate);
-                        _Controller = "Home";
-                        _Action = "Index";
+                        IQueryable<Services.Entities.Candidate> candidate = await _candidate.SearchCandidate(x => x.Email.Equals(objCollection.Email) && x.Password.Equals(objCollection.Password));
+                        if (candidate.Any())
+                        {
+                            Services.Entities.Candidate _candidate = new Services.Entities.Candidate();
+                            _candidate = candidate.FirstOrDefault();
+                            _candidate.Password = _candidate.Password.EncodeBase64();
+                            HttpContext.Session.SetObjectAsJson("AuthenticatedUser", _candidate);
+                            _Controller = "Home";
+                            _Action = "Index";
+                        }
                     }
-                }
-                else
-                {
-                    _Controller = "Account";
-                    _Action = "Login";
-                }
+                    else
+                    {
+                        _Controller = "Account";
+                        _Action = "Login";
+                    }
+                }               
                 return RedirectToAction(_Action, _Controller);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message, ex.InnerException);
+               throw new Exception(ex.Message, ex.InnerException);
             }
             finally
-            { }
+            {
+            }
         }
 
         [HttpGet]

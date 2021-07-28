@@ -25,10 +25,14 @@ namespace Quiz_Application.Services.Repository.Candidate
         {
             return await _dbSet.FindAsync(id);
         }
+        
         public async Task<IQueryable<TEntity>> SearchCandidate(Expression<Func<TEntity, bool>> search = null)
         {
             IQueryable<TEntity> query=_dbSet;
-            if (search != null){ query =query.Where(search); }           
+            if (search != null)
+            { 
+                query =query.Where(search); 
+            }           
             return query;
         }
 
@@ -39,7 +43,6 @@ namespace Quiz_Application.Services.Repository.Candidate
             output = await _dbContext.SaveChangesAsync();
             return output;
         }
-
         public async Task<int> UpdateCandidate(TEntity entity)
         {
             int output = 0;

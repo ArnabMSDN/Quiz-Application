@@ -99,7 +99,7 @@
                 }
   </style>
 </head>
-<body>
+<body>    
     <div class="signup-form">
         <form asp-action="Register" asp-controller="Account" method="post">
             <h2>Sign Up</h2>
@@ -148,7 +148,7 @@
                     <input asp-for="Phone" class="form-control" placeholder="Phone" required="required" />
                     <span asp-validation-for="Phone" class="text-danger"></span>
                 </div>
-            </div>            
+            </div>
             <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-prepend">
@@ -173,15 +173,17 @@
                 </div>
             </div>
             <div class="form-group">
-             
                 <label class="form-check-label"><input type="checkbox" asp-for="Policy" required="required" /> I accept the <a asp-action="Privacy" asp-controller="Home">Terms of Use</a> &amp; <a asp-action="Privacy" asp-controller="Home">Privacy Policy</a></label>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
             </div>
         </form>
+        <div class="form-group">@Html.Raw(@ViewBag.Alert)</div>
         <div class="text-center">Already have an account? <a asp-controller="Account" asp-action="Login">Login here</a></div>
+
     </div>
+
 </body>
 </html>
    

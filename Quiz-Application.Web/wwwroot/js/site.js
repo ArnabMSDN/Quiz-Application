@@ -3,13 +3,13 @@
 // Write your JavaScript code.
 
 $(document).ready(function () { 
-  $('#pnlQuestion').hide();
+  
   $.ajax({
      type: "GET",
      url: "/Exam/ExamList",
      data: "{}",
      success: function (data) {
-       var string = '<option value="-1">Please select the exam</option>';
+       var string = '<option value="-1">--- Please Select ---</option>';
        for (var i = 0; i < data.length; i++) { string += '<option value="' + data[i].examID + '">' + data[i].name + '</option>'; }
        $("#ddlExam").html(string);
       }
@@ -22,8 +22,8 @@ $('#chooseFile').change(function () {
 });
 
 //Start the Exam
-$('#btnStart').click(function () {   
-    $('#pnlQuestion').show(250);
+$('#btnStart').click(function () {
+    alert('Button clicked !');
 });
 
 function SaveImage() {

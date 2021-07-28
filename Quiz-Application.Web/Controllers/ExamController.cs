@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Quiz_Application.Web.Models;
 using Quiz_Application.Web.Authentication;
 using Quiz_Application.Services.Entities;
 using Quiz_Application.Services.Repository.Exam;
-using System.Net;
+using Quiz_Application.Services.Repository.Question;
 
 namespace Quiz_Application.Web.Controllers
 {
@@ -17,10 +18,12 @@ namespace Quiz_Application.Web.Controllers
     {
         private readonly ILogger<ExamController> _logger;
         private readonly IExam<Services.Entities.Exam> _exam;
-        public ExamController(ILogger<ExamController> logger, IExam<Services.Entities.Exam> exam)
+        private readonly IQuestion<Services.Entities.Question> _question;
+        public ExamController(ILogger<ExamController> logger, IExam<Services.Entities.Exam> exam, IQuestion<Services.Entities.Question> question)
         {
             _logger = logger;
             _exam = exam;
+            _question = question;
         }
         // GET: ExamController
         public IActionResult Index()
@@ -48,6 +51,24 @@ namespace Quiz_Application.Web.Controllers
             }
             finally { }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Questions(int ExamID)
+        {
+            try
+            {
+                IEnumerable<QnA> lst = await _question.GetQuestionList(ExamID);
+                return Ok(lst.ToList());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex.InnerException);
+            }
+            finally { }
+        }
+
+
+        #region CRUD
         // GET: ExamController/Create
         public IActionResult Create()
         {
@@ -111,5 +132,6 @@ namespace Quiz_Application.Web.Controllers
             }
         }
 
+        #endregion
     }
 }
