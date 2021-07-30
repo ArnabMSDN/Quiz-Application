@@ -3,7 +3,6 @@
 // Write your JavaScript code.
 
 $(document).ready(function () { 
-  
   $.ajax({
      type: "GET",
      url: "/Exam/ExamList",
@@ -23,7 +22,7 @@ $('#chooseFile').change(function () {
 
 //Start the Exam
 $('#btnStart').click(function () {
-    alert('Button clicked !');
+    StartTimer();
 });
 
 function SaveImage() {
@@ -53,4 +52,21 @@ function ShowImagePreview(input) {
      };
      reader.readAsDataURL(input.files[0]);
   }
+}
+
+function StartTimer() {   
+    var deadline = new Date();
+    deadline.setHours(deadline.getHours() + 2);
+    var x = setInterval(function () {
+        var now = new Date().getTime();
+        var t = deadline.getTime() - now;        
+        var hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((t % (1000 * 60)) / 1000);
+        document.getElementById("timer").innerHTML = "Time : "+ hours + "h " + minutes + "m " + seconds + "s ";
+        if (t < 0) {
+            clearInterval(x);
+            document.getElementById("timer").innerHTML = "EXPIRED";
+        }
+    }, 1000);
 }
