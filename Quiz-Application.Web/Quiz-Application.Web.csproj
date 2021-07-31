@@ -26,4 +26,8 @@
     <ProjectReference Include="..\Quiz-Application.Services\Quiz-Application.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\UploadedFiles\" />
+  </ItemGroup>
+
 </Project>

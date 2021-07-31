@@ -29,12 +29,10 @@ namespace Quiz_Application.Web.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm Password")]
-        [Compare("Password", ErrorMessage = "Passwords do not match.")]
+        [Compare("Password")]
         public string ConfirmPassword { get; set; }
-
-        public IFormFile ImgPath { get; set; }
-
-        [Display(Name = "Remember Me")]
+       
+        [Display(Name = "Policy")]
         public bool Policy { get; set; }
     }
 }

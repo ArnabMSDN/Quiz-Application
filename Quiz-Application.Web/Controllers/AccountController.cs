@@ -1,26 +1,23 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Quiz_Application.Web.Models;
-using Microsoft.Extensions.Logging;
-using Quiz_Application.Services;
-using Quiz_Application.Services.Repository;
 using Quiz_Application.Web.Common;
-using Quiz_Application.Web.Authentication;
+using Quiz_Application.Services.Repository.Candidate;
+using Quiz_Application.Web.Enums;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Quiz_Application.Web.Controllers
 {
-    
     public class AccountController : Controller
-    {        
+    {
         private readonly ILogger<AccountController> _logger;
         private readonly ICandidate<Services.Entities.Candidate> _candidate;
 
-        public AccountController(ILogger<AccountController> logger,ICandidate<Services.Entities.Candidate> Candidate)
+        public AccountController(ILogger<AccountController> logger, ICandidate<Services.Entities.Candidate> Candidate)
         {
             _candidate = Candidate;
             _logger = logger;
@@ -38,7 +35,33 @@ namespace Quiz_Application.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register([FromForm] RegisterViewModel objCollection)
         {
-            return RedirectToAction("Index", "Home");
+            int i = 0;
+            if(ModelState.IsValid)
+            {
+                Services.Entities.Candidate _objcandidate = new Services.Entities.Candidate()
+                {
+                    Name = objCollection.Name,
+                    Email = objCollection.Email,
+                    Phone = objCollection.Phone,
+                    Candidate_ID = objCollection.Candidate_ID,
+                    Roles = "User",
+                    Password = objCollection.Password.EncodeBase64(),
+                    CreatedBy = "SYSTEM",
+                    CreatedOn = DateTime.Now
+                };
+
+                i = await _candidate.InsertCandidate(_objcandidate);
+
+                if (i > 0)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+                else
+                { 
+                    ViewBag.Alert = CommonService.ShowAlert(Alerts.Danger, "Unknown error"); 
+                }
+            }                                       
+            return PartialView("_Register");            
         }
 
         // GET: AccountController
@@ -46,55 +69,86 @@ namespace Quiz_Application.Web.Controllers
         [AllowAnonymous]
         public IActionResult Login()
         {
-            string _Action = string.Empty;
-            string _Controller = string.Empty;
-            string value = Convert.ToString(HttpContext.Session.GetString("AuthenticatedUser"));
-
-            if (string.IsNullOrEmpty(value))            
-                return PartialView("_Login");            
-            else                          
-                return RedirectToAction("Index", "Home");                      
-        }
-
-        [HttpPost]        
-        [ValidateAntiForgeryToken]       
-        public async Task<IActionResult> Login([FromForm]LoginViewModel objCollection)
-        {
-            string _Action = string.Empty;
-            string _Controller = string.Empty;
-            string value =Convert.ToString(HttpContext.Session.GetString("AuthenticatedUser"));
-
-            if(string.IsNullOrEmpty(value))
+            try
             {
-                IQueryable<Services.Entities.Candidate> candidate = await _candidate.IsValidCandidate(x => x.Email.Equals(objCollection.Email) && x.Password.Equals(objCollection.Password));
-                if (candidate.Any())
-                {
-                    HttpContext.Session.SetObjectAsJson("AuthenticatedUser", candidate.FirstOrDefault());
-                    _Controller = "Home";
-                    _Action = "Index";                   
-                }
-            }           
-            else
-            {
-                _Controller = "Account";
-                _Action = "Login";
+                string _Action = string.Empty;
+                string _Controller = string.Empty;
+                string value = Convert.ToString(HttpContext.Session.GetString("AuthenticatedUser"));
+
+                if (string.IsNullOrEmpty(value))
+                    return PartialView("_Login");
+                else
+                    return RedirectToAction("Index", "Home");
+
             }
-             return RedirectToAction(_Action, _Controller);
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex.InnerException);
+            }
+            finally
+            { }
         }
-        
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login([FromForm] LoginViewModel objCollection)
+        {
+            try
+            {
+                string _Action = string.Empty;
+                string _Controller = string.Empty;
+                string value = Convert.ToString(HttpContext.Session.GetString("AuthenticatedUser"));
+
+                if(ModelState.IsValid)
+                {
+                    if (string.IsNullOrEmpty(value))
+                    {
+                        IQueryable<Services.Entities.Candidate> candidate = await _candidate.SearchCandidate(x => x.Email.Equals(objCollection.Email) && x.Password.Equals(objCollection.Password));
+                        if (candidate.Any())
+                        {
+                            Services.Entities.Candidate _candidate = new Services.Entities.Candidate();
+                            _candidate = candidate.FirstOrDefault();
+                            _candidate.Password = _candidate.Password.EncodeBase64();
+                            HttpContext.Session.SetObjectAsJson("AuthenticatedUser", _candidate);
+                            _Controller = "Home";
+                            _Action = "Index";
+                        }
+                    }
+                    else
+                    {
+                        _Controller = "Account";
+                        _Action = "Login";
+                    }
+                }               
+                return RedirectToAction(_Action, _Controller);
+            }
+            catch (Exception ex)
+            {
+               throw new Exception(ex.Message, ex.InnerException);
+            }
+            finally
+            {
+            }
+        }
+
         [HttpGet]
         public IActionResult Logout()
         {
             try
-            {               
-                foreach (var cookie in Request.Cookies.Keys) { Response.Cookies.Delete(cookie); }
+            {
+                foreach (var cookie in Request.Cookies.Keys)
+                {
+                    Response.Cookies.Delete(cookie);
+                }               
                 HttpContext.Session.Clear();
                 return RedirectToAction("Login", "Account");
             }
             catch (Exception ex)
             {
-                throw new Exception (ex.Message, ex.InnerException);
+                throw new Exception(ex.Message, ex.InnerException);
             }
+            finally
+            { }
         }
     }
 }

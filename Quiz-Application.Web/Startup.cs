@@ -12,6 +12,7 @@ using Quiz_Application.Services.Repository;
 using Quiz_Application.Web.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Quiz_Application.Web
 {
