@@ -9,7 +9,7 @@ namespace Quiz_Application.Services.Repository.Question
 {
     public interface IQuestion<TEntity>
     {
-        Task<IEnumerable<QnA>> GetQuestionList(int ExamID);       
+        Task<QnA> GetQuestionList(int ExamID);       
         Task<IQueryable<TEntity>> SearchQuestion(Expression<Func<TEntity, bool>> search = null);
         Task<int> InsertQuestion(TEntity entity);
         Task<int> UpdateQuestion(TEntity entity);

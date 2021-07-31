@@ -12,74 +12,87 @@ namespace Quiz_Application.Services.Repository.Question
 {
     public class Question<TEntity> : IQuestion<TEntity> where TEntity : BaseEntity
     {
-        private readonly QuizDBContext _dbContext;
-        private DbSet<TEntity> _dbSet;
-        public Question(QuizDBContext dbContext)
+       private readonly QuizDBContext _dbContext;
+       private DbSet<TEntity> _dbSet;
+       public Question(QuizDBContext dbContext)
         {
             _dbContext = dbContext;
             _dbSet = dbContext.Set<TEntity>();
         }
-      
-        public Task<int> DeleteQuestion(TEntity entity)
+
+       public Task<int> DeleteQuestion(TEntity entity)
         {
             throw new NotImplementedException();
         }
-       
-        public async Task<IEnumerable<QnA>> GetQuestionList(int ExamID)
+
+       public async Task<QnA> GetQuestionList(int ExamID)
         {
-               List<QnA> _lst = null;               
-               var Data =              
-               from Q in _dbContext.Question
-               join C in _dbContext.Choice on Q.QuestionID equals C.QuestionID
-               join A in _dbContext.Answer on C.ChoiceID equals A.ChoiceID               
-               where Q.ExamID == ExamID
-               select new {
-                   Q.QuestionID,
-                   Q.QuestionType,
-                   Question=  Q.DisplayText,
-                   Q.ExamID,
-                   C.ChoiceID,
-                   Option=C.DisplayText,
-                   AnswarID= A.Sl_No,
-                   Answar=A.DisplayText
-               };
-            _lst = new List<QnA>();
-            foreach (var item in Data)
+            QnA objQnA = null;
+            AnswerDetails _objA = null;
+            List<QuestionDetails> _objQlst = new List<QuestionDetails>();            
+           
+            var questions =await _dbContext.Question.Where(q => q.ExamID == ExamID).ToListAsync();
+            foreach (var Qitem in questions)
             {
-                QnA _obj = new QnA()
+                List<OptionDetails> _objOlst = new List<OptionDetails>();
+                QuestionDetails _objQ = new QuestionDetails();
+                _objQ.QuestionID = Qitem.QuestionID;
+                _objQ.QuestionType = Qitem.QuestionType;
+                _objQ.QuestionText = Qitem.DisplayText;
+                                          
+                var options = await _dbContext.Choice.Where(q => q.QuestionID == Qitem.QuestionID).Select(o => new { OptionID = o.ChoiceID, Option = o.DisplayText }).ToListAsync();
+               
+                foreach (var Oitem in options)
                 {
-                    QuestionID = item.QuestionID,
-                    QuestionType = item.QuestionID,
-                    Question = item.Question,
-                    ExamID = item.ExamID,
-                    ChoiceID = item.ChoiceID,
-                    Option = item.Option,
-                    AnswarID = item.AnswarID,
-                    Answar = item.Answar
+                    OptionDetails _objO = new OptionDetails()
+                    {
+                        OptionID=Oitem.OptionID,
+                        Option=Oitem.Option
+                    };
+                    _objOlst.Add(_objO);
+                }
+                _objQ.options = _objOlst;
+
+                var ans =await _dbContext.Answer.Where(q => q.QuestionID == Qitem.QuestionID).Select(o => new { AnswerID = o.Sl_No, OptionID = o.ChoiceID, Answer = o.DisplayText, }).FirstOrDefaultAsync();
+               
+                _objA = new AnswerDetails()
+                {
+                    AnswarID = ans.AnswerID,
+                    OptionID=ans.OptionID,
+                    Answar = ans.Answer                   
                 };
-                _lst.Add(_obj);
+                _objQ.answer = _objA;
+
+                _objQlst.Add(_objQ);
             }
-            return _lst;          
+
+            objQnA = new QnA()
+            {
+                ExamID = ExamID,
+                questions = _objQlst
+            };
+            return objQnA;
         }
 
-        public Task<int> InsertQuestion(TEntity entity)
+       public Task<int> InsertQuestion(TEntity entity)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IQueryable<TEntity>> SearchQuestion(Expression<Func<TEntity, bool>> search = null)
+       public async Task<IQueryable<TEntity>> SearchQuestion(Expression<Func<TEntity, bool>> search = null)
         {
             IQueryable<TEntity> query = _dbSet;
-            if (search != null) 
+            if (search != null)
             {
-                query = query.Where(search); 
+                query = query.Where(search);
             }
             return query;
         }
 
-        public Task<int> UpdateQuestion(TEntity entity)
+       public Task<int> UpdateQuestion(TEntity entity)
         {
             throw new NotImplementedException();
         }
+
     }
 }

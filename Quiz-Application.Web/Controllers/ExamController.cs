@@ -52,13 +52,28 @@ namespace Quiz_Application.Web.Controllers
             finally { }
         }
 
-        [HttpGet]
+        [HttpPost]
+        public async Task<IActionResult> ExamDetails(int ExamID)
+        {
+            try
+            {
+                Exam exm = await _exam.GetExam(ExamID);
+                return Ok(exm);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex.InnerException);
+            }
+            finally { }
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Questions(int ExamID)
         {
             try
             {
-                IEnumerable<QnA> lst = await _question.GetQuestionList(ExamID);
-                return Ok(lst.ToList());
+                QnA _obj = await _question.GetQuestionList(ExamID);
+                return Ok(_obj);
             }
             catch (Exception ex)
             {
