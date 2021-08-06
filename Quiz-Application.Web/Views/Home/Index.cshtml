@@ -73,27 +73,16 @@
                 </div>
             </div>
 
-            <div class="w3-container w3-card w3-white w3-round w3-margin">
+            <div class="w3-container w3-card w3-white w3-round w3-margin" id="eqMain">
                 <br>
-                <span class="w3-right w3-opacity">(5 of 20)</span>
-                <h3>MCQ Quiz</h3>
+                <span class="w3-right w3-opacity" id="eqCount"></span>
+                <h3></h3>
                 <hr class="w3-clear">
-                <h4 style="color:red;">Q. Which of the following country has largest population ?</h4>     
-                <p>
-                    <div style="padding:5px;">
-                        <input class="w3-radio" type="radio" name="gender" value="male">
-                        <label>Male</label>
-
-                        <input class="w3-radio" type="radio" name="gender" value="female" style=" margin-left: 20px;">
-                        <label>Female</label>
-
-                        <input class="w3-radio" type="radio" name="gender" value="" style=" margin-left: 20px;">
-                        <label>Don't know (Disabled)</label>
-                    </div>                   
-                </p>              
+                <h4 style="color:red;" id="eqQuestion"></h4>
+                <p></p>
                 <hr class="w3-clear">
-                <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom w3-left"><i class="fa fa-angle-left"></i> Previous</button>
-                <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom w3-right">Next <i class="fa fa-angle-right"></i></button>
+                <button id="btnPrev" type="button" class="w3-button w3-theme-d1 w3-margin-bottom w3-left"><i class="fa fa-angle-left"></i> Previous</button>
+                <button id="btnNext" type="button" class="w3-button w3-theme-d2 w3-margin-bottom w3-right">Next <i class="fa fa-angle-right"></i></button>
             </div>
             <!-- End Middle Column -->
         </div>

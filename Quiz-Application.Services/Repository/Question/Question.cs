@@ -29,9 +29,9 @@ namespace Quiz_Application.Services.Repository.Question
         {
             QnA objQnA = null;
             AnswerDetails _objA = null;
-            List<QuestionDetails> _objQlst = new List<QuestionDetails>();            
-           
-            var questions =await _dbContext.Question.Where(q => q.ExamID == ExamID).ToListAsync();
+            List<QuestionDetails> _objQlst = new List<QuestionDetails>();
+            string _examName = await  _dbContext.Exam.Where(e => e.ExamID == ExamID).Select(o => o.Name).SingleOrDefaultAsync();
+            var questions = await _dbContext.Question.Where(q => q.ExamID == ExamID).ToListAsync();
             foreach (var Qitem in questions)
             {
                 List<OptionDetails> _objOlst = new List<OptionDetails>();
@@ -69,6 +69,7 @@ namespace Quiz_Application.Services.Repository.Question
             objQnA = new QnA()
             {
                 ExamID = ExamID,
+                Exam= _examName,
                 questions = _objQlst
             };
             return objQnA;

@@ -9,6 +9,7 @@ namespace Quiz_Application.Services.Entities
     public class QnA
     {
         public int ExamID { get; set; }
+        public string Exam { get; set; }
         public List<QuestionDetails>  questions { get; set; }
     }
     public class QuestionDetails

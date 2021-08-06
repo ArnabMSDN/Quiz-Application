@@ -4,10 +4,12 @@
 
 $(document).ready(function () {
     var ExmID = 0;   
-    var Duration = 0;    
+    var Duration = 0;
+    var qIndex = 0;        
 
     $('#ddlExam').prop('disabled', false);
-    $('#btnStart').prop('disabled', false);
+    $('#btnStart').prop('disabled', false);   
+    $('#eqMain button.w3-left').prop('disabled', true);
     $.ajax({
         type: "GET",
         url: "/Exam/ExamList",
@@ -29,11 +31,19 @@ $(document).ready(function () {
                 function (data) {
                     Duration = data.duration;                                       
                     StartTimer(Duration);
-                    PopulateQuestions(ExmID)
+                    PopulateQuestions(ExmID, qIndex);
                 });           
         }
         else
             alert('Please select your skill.');        
+    });
+
+    $('#eqPrev').click(function () {
+        
+    });
+
+    $('#eqNext').click(function () {
+
     });
 });
 
@@ -55,7 +65,7 @@ function SaveImage() {
         processData: false,
         contentType: false,
         success: function (response) {
-            console.log(response);
+            //console.log(response);
         }
     });
 }
@@ -88,9 +98,22 @@ function StartTimer(Duration) {
    }, 1000);
 }
 
-function PopulateQuestions(ExmID) {
-    $.post('/Exam/Questions', { ExamID: ExmID },
-        function (data) {
-            console.log(data);
-        });
+function PopulateQuestions(ExmID, qIndex) {
+   $.post('/Exam/Questions', { ExamID: ExmID },
+     function (data) {
+         console.log(data);
+         var Ostring = "<div style='padding: 5px;' id='eqOption'>";
+         qIndex = data.questions.length;
+         $('#eqCount').html("(1" + " of " + qIndex+")");
+         $('div#eqMain h3').html(data.exam + " Quiz");
+         $('div#eqMain h4').html("Q. " + data.questions[0].questionText);
+         for (var i in data.questions[0].options) {
+             console.log(i, data.questions[0].options[i]);
+             Ostring = Ostring + "<input class='w3-radio' type='radio' name='option' value='" + data.questions[0].options[i].optionID+"'><label> " + data.questions[0].options[i].option+"</label><br/>";
+         }
+         Ostring = Ostring + "</div>";
+         console.log(Ostring);
+         $('div #eqMain #btnPrev').prop('disabled', false);
+         $('div#eqMain p').append(Ostring);
+     });
 }
