@@ -27,7 +27,8 @@
                     </p>
                     <hr>
                     <p>
-                        <i class="fa fa-address-card fa-fw w3-margin-right w3-text-theme"></i>@Model.Candidate_ID
+                        <i class="fa fa-address-card fa-fw w3-margin-right w3-text-theme"></i>                      
+                        <lable id="eqCandidateID">@Model.Candidate_ID</lable>
                     </p>
                     <p>
                         <i class="fa fa-user fa-fw w3-margin-right w3-text-theme"></i>@Model.Name
@@ -72,17 +73,17 @@
                     </div>
                 </div>
             </div>
-
             <div class="w3-container w3-card w3-white w3-round w3-margin" id="eqMain">
                 <br>
                 <span class="w3-right w3-opacity" id="eqCount"></span>
-                <h3></h3>
+                <h3>Loading...</h3>
                 <hr class="w3-clear">
                 <h4 style="color:red;" id="eqQuestion"></h4>
-                <p></p>
+                <p></p>               
+                <button class="w3-button w3-block w3-blue" id="btnSave"><i class="fa fa-check"></i> Submit</button>
                 <hr class="w3-clear">
                 <button id="btnPrev" type="button" class="w3-button w3-theme-d1 w3-margin-bottom w3-left"><i class="fa fa-angle-left"></i> Previous</button>
-                <button id="btnNext" type="button" class="w3-button w3-theme-d2 w3-margin-bottom w3-right">Next <i class="fa fa-angle-right"></i></button>
+                <button id="btnNext" type="button" class="w3-button w3-theme-d1 w3-margin-bottom w3-right">Next <i class="fa fa-angle-right"></i></button>
             </div>
             <!-- End Middle Column -->
         </div>
