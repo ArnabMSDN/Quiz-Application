@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Quiz_Application.Web.Common
+namespace Quiz_Application.Web.Extensions
 {    
     public static class EncodingExtension
     {

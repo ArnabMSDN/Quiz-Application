@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Quiz_Application.Web.Models;
-using Quiz_Application.Web.Common;
-using Quiz_Application.Services.Repository.Candidate;
-using Quiz_Application.Web.Enums;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Quiz_Application.Web.Models;
+using Quiz_Application.Web.Extensions;
+using Quiz_Application.Web.Enums;
+using Quiz_Application.Services.Repository.Interfaces;
+
 
 namespace Quiz_Application.Web.Controllers
 {

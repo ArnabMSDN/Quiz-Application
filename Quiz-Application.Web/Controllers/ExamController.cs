@@ -1,44 +1,36 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Quiz_Application.Web.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Quiz_Application.Web.Authentication;
 using Quiz_Application.Services.Entities;
-using Quiz_Application.Services.Repository.Exam;
-using Quiz_Application.Services.Repository.Question;
+using Quiz_Application.Web.Models;
+using Quiz_Application.Services.Repository.Interfaces;
+
 
 namespace Quiz_Application.Web.Controllers
-{
-    [BasicAuthentication]
+{    
+    [BasicAuthentication]   
     public class ExamController : Controller
     {
         private readonly ILogger<ExamController> _logger;
         private readonly IExam<Services.Entities.Exam> _exam;
         private readonly IQuestion<Services.Entities.Question> _question;
-        public ExamController(ILogger<ExamController> logger, IExam<Services.Entities.Exam> exam, IQuestion<Services.Entities.Question> question)
+        private readonly IResult<Services.Entities.Result> _result;
+        public ExamController(ILogger<ExamController> logger, IExam<Services.Entities.Exam> exam, IQuestion<Services.Entities.Question> question, IResult<Services.Entities.Result> result)
         {
             _logger = logger;
             _exam = exam;
             _question = question;
+            _result = result;
         }
-        // GET: ExamController
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        // GET: ExamController/Details/5
-        public IActionResult Details(int id)
-        {
-            return View();
-        }
-
+             
         [HttpGet]
-        public async Task<IActionResult> ExamList()
+        [Route("~/api/Exams")]
+        public async Task<IActionResult> Exams()
         {           
             try
             {
@@ -52,8 +44,9 @@ namespace Quiz_Application.Web.Controllers
             finally { }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> ExamDetails(int ExamID)
+        [HttpGet]
+        [Route("~/api/Exam/{ExamID?}")]
+        public async Task<IActionResult> Exam(int ExamID)
         {
             try
             {
@@ -64,10 +57,13 @@ namespace Quiz_Application.Web.Controllers
             {
                 throw new Exception(ex.Message, ex.InnerException);
             }
-            finally { }
+            finally 
+            {
+            }
         }
 
-        [HttpPost]
+        [HttpGet]
+        [Route("~/api/Questions/{ExamID?}")]
         public async Task<IActionResult> Questions(int ExamID)
         {
             try
@@ -79,7 +75,28 @@ namespace Quiz_Application.Web.Controllers
             {
                 throw new Exception(ex.Message, ex.InnerException);
             }
-            finally { }
+            finally 
+            {
+            }
+        }
+
+
+        [HttpPost]
+        [Route("~/api/Result")]
+        public async Task<IActionResult> Result(List<Request> objRequest)
+        {
+            try
+            {
+                IEnumerable<Result> _objLst = await _result.GetResult(objRequest);
+                return Ok(_objLst.ToList());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex.InnerException);
+            }
+            finally
+            {
+            }
         }
 
 

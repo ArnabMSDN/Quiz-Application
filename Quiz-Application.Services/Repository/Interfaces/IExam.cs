@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Quiz_Application.Services.Repository.Exam
+namespace Quiz_Application.Services.Repository.Interfaces
 {
     public interface IExam<TEntity>
     {

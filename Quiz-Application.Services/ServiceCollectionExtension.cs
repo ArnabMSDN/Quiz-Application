@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Quiz_Application.Services.Repository.Candidate;
-using Quiz_Application.Services.Repository.Exam;
-using Quiz_Application.Services.Repository.Question;
+using Quiz_Application.Services.Repository.Interfaces;
+using Quiz_Application.Services.Repository.Base;
+
 
 namespace Quiz_Application.Services
 {
@@ -16,9 +16,10 @@ namespace Quiz_Application.Services
        public static IServiceCollection AddServices(this IServiceCollection services)
        {
             return services
-                .AddScoped<ICandidate<Entities.Candidate>, Candidate<Entities.Candidate>>()
-                .AddScoped<IExam<Entities.Exam>, Exam<Entities.Exam>>()
-                .AddScoped<IQuestion<Entities.Question>, Question<Entities.Question>>();
+           .AddScoped<ICandidate<Entities.Candidate>, Candidate<Entities.Candidate>>()
+           .AddScoped<IExam<Entities.Exam>, Exam<Entities.Exam>>()
+           .AddScoped<IQuestion<Entities.Question>, Question<Entities.Question>>()
+           .AddScoped<IResult<Entities.Result>, Result<Entities.Result>>();
         }
     }
 }

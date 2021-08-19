@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Quiz_Application.Services.Repository.Candidate
+namespace Quiz_Application.Services.Repository.Interfaces
 {
     public interface ICandidate<TEntity>
     {
@@ -14,7 +14,6 @@ namespace Quiz_Application.Services.Repository.Candidate
         Task<int> InsertCandidate(TEntity entity);
         Task<int> UpdateCandidate(TEntity entity);
         Task<int> DeleteCandidate(TEntity entity);
-
        
     }
 }

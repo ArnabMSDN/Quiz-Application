@@ -1,12 +1,13 @@
-﻿using Quiz_Application.Services.Entities;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
+using Quiz_Application.Services.Entities;
+using Quiz_Application.Services.Repository.Interfaces;
 
-namespace Quiz_Application.Services.Repository.Candidate
+namespace Quiz_Application.Services.Repository.Base
 {
     public class Candidate<TEntity> : ICandidate<TEntity> where TEntity : BaseEntity
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Quiz_Application.Web.Enums;
 
-namespace Quiz_Application.Web.Common
+namespace Quiz_Application.Web.Extensions
 {
     public class CommonService
     {

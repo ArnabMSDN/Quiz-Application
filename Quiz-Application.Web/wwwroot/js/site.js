@@ -19,7 +19,7 @@ $(document).ready(function () {
     $('#btnSave').prop('disabled', true);
     $.ajax({
         type: "GET",
-        url: "/Exam/ExamList",
+        url: "/api/Exams",
         data: "{}",
         success: function (data) {
             var string = '<option value="-1">--- Please Select ---</option>';
@@ -35,7 +35,7 @@ $(document).ready(function () {
             $('#btnStart').prop('disabled', true);
             $('#btnSave').prop('disabled', false);
             ExmID = $("#ddlExam").val();
-            $.post('/Exam/ExamDetails', { ExamID: ExmID },
+            $.get('/api/Exam/', { ExamID: ExmID },
                function (data) {
                     Duration = data.duration;
                     StartTimer(Duration);
@@ -133,8 +133,7 @@ $(document).ready(function () {
             ExamID: ExmID,
             QuestionID: QuestionID,
             AnswerID: AnswerID,
-            SelectedOption: $('input[name="option"]:checked').val(),
-            IsCorrect: ''
+            SelectedOption: $('input[name="option"]:checked').val()           
         };
         if (result.some(item => item.QuestionID === QuestionID)) {
             //console.log('EXIST');
@@ -147,6 +146,13 @@ $(document).ready(function () {
         ans = [];
     });
 
+    $('#btnSubmit').click(function () {
+        $.post('/api/Result/', { objRequest: result },
+            function (data) {
+                console.log(data);
+            });
+    });
+
     function UpdateItem(QuestionID) {
         for (var i in result) {
             if (result[i].QuestionID == QuestionID) {               
@@ -154,15 +160,14 @@ $(document).ready(function () {
                 result[i].ExamID= ExmID;
                 result[i].QuestionID= QuestionID;
                 result[i].AnswerID= AnswerID;
-                result[i].SelectedOption= $('input[name="option"]:checked').val();
-                result[i].IsCorrect= '';
+                result[i].SelectedOption= $('input[name="option"]:checked').val();                
                 break;
             }
         }
     }
 
     function PopulateQuestions(ExmID) {
-        $.post('/Exam/Questions', { ExamID: ExmID },
+        $.get('/api/Questions', { ExamID: ExmID },
             function (data) {
                 QuestionID = 0;
                 AnswerID = 0;
