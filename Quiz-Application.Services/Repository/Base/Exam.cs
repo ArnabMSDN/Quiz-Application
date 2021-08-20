@@ -36,7 +36,7 @@ namespace Quiz_Application.Services.Repository.Base
             return query;
         }
 
-        public async Task<int> InsertExam(TEntity entity)
+        public async Task<int> AddExam(TEntity entity)
         {
             int output = 0;
             _dbSet.Add(entity);

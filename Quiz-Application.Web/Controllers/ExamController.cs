@@ -82,88 +82,48 @@ namespace Quiz_Application.Web.Controllers
 
 
         [HttpPost]
-        [Route("~/api/Result")]
+        [Route("~/api/Result")]       
         public async Task<IActionResult> Result(List<Request> objRequest)
         {
+            int i = 0;
+            bool IsCorrect = false;
+            List<Result> objList = null;
             try
-            {
-                IEnumerable<Result> _objLst = await _result.GetResult(objRequest);
-                return Ok(_objLst.ToList());
+            {               
+                if (objRequest.Count > 0)
+                {
+                    objList = new List<Result>();
+                    foreach (var item in objRequest)
+                    {
+                        if (item.AnswerID == item.SelectedOption)
+                            IsCorrect = true;
+                        Result obj = new Result()
+                        {
+                            CandidateID = item.CandidateID,
+                            ExamID = item.ExamID,
+                            QuestionID = item.QuestionID,
+                            AnswerID = item.AnswerID,
+                            SelectedOptionID = item.SelectedOption,
+                            IsCorrent = IsCorrect,
+                            CreatedBy = "SYSTEM",
+                            CreatedOn = DateTime.Now
+                        };
+                        objList.Add(obj);
+                    }
+                    i = await _result.AddResult(objList);
+                }
+               
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message, ex.InnerException);
+                i = 0;
+                throw new Exception(ex.Message, ex.InnerException);           
             }
             finally
-            {
+            {                
             }
+            return Ok(i);
         }
-
-
-        #region CRUD
-        // GET: ExamController/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: ExamController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: ExamController/Edit/5
-        public IActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: ExamController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: ExamController/Delete/5
-        public IActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ExamController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        #endregion
+        
     }
 }

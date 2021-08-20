@@ -11,7 +11,7 @@ namespace Quiz_Application.Services.Repository.Interfaces
         Task<IEnumerable<TEntity>> GetCandidateList();
         Task<TEntity> GetCandidate(int id);
         Task<IQueryable<TEntity>> SearchCandidate(Expression<Func<TEntity, bool>> search = null);
-        Task<int> InsertCandidate(TEntity entity);
+        Task<int> AddCandidate(TEntity entity);
         Task<int> UpdateCandidate(TEntity entity);
         Task<int> DeleteCandidate(TEntity entity);
        

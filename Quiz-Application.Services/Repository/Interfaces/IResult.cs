@@ -11,5 +11,6 @@ namespace Quiz_Application.Services.Repository.Interfaces
     {
         Task<IEnumerable<TEntity>> GetResult(List<Request> entity);
         Task<IEnumerable<TEntity>> ScoreReport(int CandidateID);
+        Task<int> AddResult(List<TEntity> entity);
     }
 }

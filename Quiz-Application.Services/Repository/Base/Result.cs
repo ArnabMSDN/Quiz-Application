@@ -19,6 +19,15 @@ namespace Quiz_Application.Services.Repository.Base
             _dbContext = dbContext;
             _dbSet = dbContext.Set<TEntity>();
         }
+
+        public async Task<int> AddResult(List<TEntity> entity)
+        {
+            int output = 0;
+            _dbSet.AddRange(entity);
+            output = await _dbContext.SaveChangesAsync();
+            return output;
+        }
+
         public async Task<IEnumerable<TEntity>> GetResult(List<Request> entity)
         {
             throw new NotImplementedException();

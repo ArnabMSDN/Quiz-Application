@@ -11,7 +11,7 @@ namespace Quiz_Application.Services.Repository.Interfaces
     {
         Task<QnA> GetQuestionList(int ExamID);       
         Task<IQueryable<TEntity>> SearchQuestion(Expression<Func<TEntity, bool>> search = null);
-        Task<int> InsertQuestion(TEntity entity);
+        Task<int> AddQuestion(TEntity entity);
         Task<int> UpdateQuestion(TEntity entity);
         Task<int> DeleteQuestion(TEntity entity);
     }

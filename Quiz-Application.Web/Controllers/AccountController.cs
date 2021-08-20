@@ -51,7 +51,7 @@ namespace Quiz_Application.Web.Controllers
                     CreatedOn = DateTime.Now
                 };
 
-                i = await _candidate.InsertCandidate(_objcandidate);
+                i = await _candidate.AddCandidate(_objcandidate);
 
                 if (i > 0)
                 {

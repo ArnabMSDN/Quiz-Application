@@ -3,6 +3,7 @@
 // Write your JavaScript code.
 
 $(document).ready(function () {
+
     var ExmID = 0;
     var QuestionID = 0;
     var AnswerID = 0;
@@ -10,7 +11,7 @@ $(document).ready(function () {
     var index = 0;
     var qIndex = 0;
     var objData = [];
-    var result = [];
+    var result = [];    
 
     $('#ddlExam').prop('disabled', false);
     $('#btnStart').prop('disabled', false);
@@ -42,8 +43,17 @@ $(document).ready(function () {
                     PopulateQuestions(ExmID);
                });
         }
-        else
-            alert('Please select your skill.');
+        else           
+            $.alert({
+                icon: 'fa fa-warning',
+                type: 'orange',
+                title: 'Select Skill',
+                content: 'Please select your skill !',
+                boxWidth: '40%',
+                useBootstrap: false,
+                closeIcon: true,
+                closeIconClass: 'fa fa-close'
+            });
     });
 
     $('#btnPrev').click(function () {
@@ -60,7 +70,7 @@ $(document).ready(function () {
             $('div#eqMain h3').html(objData.exam + " Quiz");
             $('div#eqMain h4').html("Question " + count + " : " + objData.questions[index].questionText);
             QuestionID = objData.questions[index].questionID;
-            AnswerID = objData.questions[index].answer.answarID;
+            AnswerID = objData.questions[index].answer.optionID;
             let obj = result.find(o => o.QuestionID === QuestionID);                         
             //console.log(obj.SelectedOption);
             for (var i in objData.questions[index].options) {
@@ -100,7 +110,7 @@ $(document).ready(function () {
             $('div#eqMain h3').html(objData.exam + " Quiz");
             $('div#eqMain h4').html("Question " + count + " : " + objData.questions[index].questionText);
             QuestionID = objData.questions[index].questionID;
-            AnswerID = objData.questions[index].answer.answarID;
+            AnswerID = objData.questions[index].answer.optionID;
             let obj = result.find(o => o.QuestionID === QuestionID);
             //console.log(obj);
             for (var i in objData.questions[index].options) {
@@ -147,10 +157,52 @@ $(document).ready(function () {
     });
 
     $('#btnSubmit').click(function () {
-        $.post('/api/Result/', { objRequest: result },
-            function (data) {
-                console.log(data);
-            });
+        $.confirm({
+            icon: 'fa fa-warning',
+            title: 'Submit Quiz',
+            content: 'Are you sure you want to submit the quiz ?',
+            type: 'orange',
+            closeIcon: true,
+            closeIconClass: 'fa fa-close',
+            boxWidth: '40%',
+            useBootstrap: false,
+            buttons: {
+                Submit: {
+                    text: 'Submit',
+                    btnClass: 'btn-red',
+                    action: function () {
+                      $.post('/api/Result/', { objRequest: result },
+                         function (data) {
+                             if (data > 0) {
+                                 $.alert({                                     
+                                     type: 'green',
+                                     title: 'Success !',
+                                     content: 'Please check the score.',
+                                     boxWidth: '40%',
+                                     useBootstrap: false,
+                                     closeIcon: true,
+                                     closeIconClass: 'fa fa-close'
+                                 });
+                             }
+                             else
+                                 $.alert({                                    
+                                     type: 'red',
+                                     title: 'Error !',
+                                     content: 'Please try again.',
+                                     boxWidth: '40%',
+                                     useBootstrap: false,
+                                     closeIcon: true,
+                                     closeIconClass: 'fa fa-close'
+                                 });
+
+                         });
+                    }
+                },
+                Cancel: function () {
+                    $(this).remove();
+                }
+            }
+        });
     });
 
     function UpdateItem(QuestionID) {
@@ -180,7 +232,7 @@ $(document).ready(function () {
                 $('div#eqMain h3').html(data.exam + " Quiz");
                 $('div#eqMain h4').html("Question 1 : " + data.questions[0].questionText);
                 QuestionID = data.questions[0].questionID;
-                AnswerID = data.questions[0].answer.answarID;
+                AnswerID = data.questions[0].answer.optionID;
                 for (var i in data.questions[0].options) {
                     //console.log(i, data.questions[0].options[i]);
                     Ostring = Ostring + "<input class='w3-radio' type='radio' name='option' value='" + data.questions[0].options[i].optionID + "'><label> " + data.questions[0].options[i].option + "</label><br/>";

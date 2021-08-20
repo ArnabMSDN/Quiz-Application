@@ -74,7 +74,7 @@ namespace Quiz_Application.Services.Repository.Base
             return objQnA;
         }
 
-       public Task<int> InsertQuestion(TEntity entity)
+       public Task<int> AddQuestion(TEntity entity)
         {
             throw new NotImplementedException();
         }
