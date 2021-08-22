@@ -80,7 +80,6 @@ namespace Quiz_Application.Web.Controllers
             }
         }
 
-
         [HttpPost]
         [Route("~/api/Result")]       
         public async Task<IActionResult> Result(List<Request> objRequest)
@@ -88,10 +87,12 @@ namespace Quiz_Application.Web.Controllers
             int i = 0;
             bool IsCorrect = false;
             List<Result> objList = null;
+            string _SessionID = null;
             try
             {               
                 if (objRequest.Count > 0)
                 {
+                    _SessionID = Guid.NewGuid().ToString() + "-" + DateTime.Now;
                     objList = new List<Result>();
                     foreach (var item in objRequest)
                     {
@@ -108,6 +109,7 @@ namespace Quiz_Application.Web.Controllers
                             AnswerID = item.AnswerID,
                             SelectedOptionID = item.SelectedOption,
                             IsCorrent = IsCorrect,
+                            SessionID= _SessionID,
                             CreatedBy = "SYSTEM",
                             CreatedOn = DateTime.Now
                         };
