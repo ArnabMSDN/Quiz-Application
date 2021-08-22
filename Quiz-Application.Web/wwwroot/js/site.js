@@ -3,7 +3,7 @@
 // Write your JavaScript code.
 
 $(document).ready(function () {
-
+    
     var ExmID = 0;
     var QuestionID = 0;
     var AnswerID = 0;
@@ -11,13 +11,16 @@ $(document).ready(function () {
     var index = 0;
     var qIndex = 0;
     var objData = [];
-    var result = [];    
+    var result = [];
+    var checkTime = [];
 
     $('#ddlExam').prop('disabled', false);
     $('#btnStart').prop('disabled', false);
+    $('#btnSubmit').prop('disabled', false);
+    $('#btnSave').prop('disabled', true);
     $('#eqMain button.w3-left').prop('disabled', true);
     $('#eqMain button.w3-right').prop('disabled', true);
-    $('#btnSave').prop('disabled', true);
+    $("#eqReport").children().prop('disabled', true);
     $.ajax({
         type: "GET",
         url: "/api/Exams",
@@ -38,9 +41,9 @@ $(document).ready(function () {
             ExmID = $("#ddlExam").val();
             $.get('/api/Exam/', { ExamID: ExmID },
                function (data) {
-                    Duration = data.duration;
-                    StartTimer(Duration);
-                    PopulateQuestions(ExmID);
+                   Duration = data.duration;
+                   StartTimer(Duration, checkTime);                   
+                   PopulateQuestions(ExmID);                   
                });
         }
         else           
@@ -137,7 +140,7 @@ $(document).ready(function () {
         }
     });
 
-    $('#btnSave').click(function () {
+    $('#btnSave').click(function () {       
         var ans = {
             CandidateID: $('#eqCandidateID').text(),
             ExamID: ExmID,
@@ -156,7 +159,7 @@ $(document).ready(function () {
         ans = [];
     });
 
-    $('#btnSubmit').click(function () {
+    $('#btnSubmit').click(function () {              
         $.confirm({
             icon: 'fa fa-warning',
             title: 'Submit Quiz',
@@ -174,7 +177,10 @@ $(document).ready(function () {
                       $.post('/api/Result/', { objRequest: result },
                          function (data) {
                              if (data > 0) {
-                                 $.alert({                                     
+                                 stop(checkTime);
+                                 $('#btnSubmit').prop('disabled', true);
+                                 $("#eqReport").children().prop('disabled', false);
+                                 $.alert({
                                      type: 'green',
                                      title: 'Success !',
                                      content: 'Please check the score.',
@@ -184,8 +190,10 @@ $(document).ready(function () {
                                      closeIconClass: 'fa fa-close'
                                  });
                              }
-                             else
-                                 $.alert({                                    
+                             else {
+                                 $('#btnSubmit').prop('disabled', false);
+                                 $("#eqReport").children().prop('disabled', true);
+                                 $.alert({
                                      type: 'red',
                                      title: 'Error !',
                                      content: 'Please try again.',
@@ -194,7 +202,7 @@ $(document).ready(function () {
                                      closeIcon: true,
                                      closeIconClass: 'fa fa-close'
                                  });
-
+                             }
                          });
                     }
                 },
@@ -222,8 +230,7 @@ $(document).ready(function () {
         $.get('/api/Questions', { ExamID: ExmID },
             function (data) {
                 QuestionID = 0;
-                AnswerID = 0;
-                //console.log(data);
+                AnswerID = 0;               
                 objData = data;
                 //console.log(objData);
                 var Ostring = "<div style='padding: 5px;' id='eqOption'>";
@@ -242,6 +249,31 @@ $(document).ready(function () {
                 $('div#eqMain p').append(Ostring);
                 $('#eqMain button.w3-right').prop('disabled', false);
             });
+    }
+
+    function StartTimer(Duration, checkTime) {
+        var deadline = new Date();
+        deadline.setHours(deadline.getHours() + Duration);
+        if (checkTime.length== 0) {
+            var x = setInterval(function () {
+                var now = new Date().getTime();
+                var t = deadline.getTime() - now;
+                var hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((t % (1000 * 60)) / 1000);
+                document.getElementById("timer").innerHTML = "Time : " + hours + ":" + minutes + ":" + seconds;
+                if (t < 0) {
+                    clearInterval(x);
+                    document.getElementById("timer").innerHTML = "Time : 00:00:00";
+                }
+            }, 1000);
+            checkTime.push(x);            
+        }
+    }
+
+    function stop(checkTime) {
+        clearInterval(checkTime[0]);
+        checkTime = [];       
     }
 
 });
@@ -280,20 +312,5 @@ $(document).ready(function () {
 //    }
 //}
 
-function StartTimer(Duration) {
-    var deadline = new Date();
-    deadline.setHours(deadline.getHours() + Duration);
-    var x = setInterval(function () {
-        var now = new Date().getTime();
-        var t = deadline.getTime() - now;
-        var hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((t % (1000 * 60)) / 1000);
-        document.getElementById("timer").innerHTML = "Time : " + hours + ":" + minutes + ":" + seconds;
-        if (t < 0) {
-            clearInterval(x);
-            document.getElementById("timer").innerHTML = "EXPIRED";
-        }
-    }, 1000);
-}
+
 

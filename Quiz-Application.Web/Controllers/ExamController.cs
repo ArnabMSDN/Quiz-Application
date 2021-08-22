@@ -97,6 +97,9 @@ namespace Quiz_Application.Web.Controllers
                     {
                         if (item.AnswerID == item.SelectedOption)
                             IsCorrect = true;
+                        else
+                            IsCorrect = false;
+
                         Result obj = new Result()
                         {
                             CandidateID = item.CandidateID,
