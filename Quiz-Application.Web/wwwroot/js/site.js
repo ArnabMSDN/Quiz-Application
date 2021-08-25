@@ -215,15 +215,19 @@ $(document).ready(function () {
         });
     });
 
-    $('#btnScore').click(function () {
+    $('.btnScore').click(function () {
         var request = {
             ExamID: $(this).closest("tr").find('td:eq(2)').text(),
             CandidateID: $('#hdnCandidateID').val(),            
             SessionID: $(this).closest("tr").find('td:eq(1)').text()            
         };
         $.post('/api/Report/', { argRpt: request },
-            function (data) {
-                console.log(data);
+            function (data) {                
+                $('div#eqScore h3').html(data[0].exam+' Test');
+                $('div#eqScore .w3-container p:eq(0)').html('<strong>Candidate ID:</strong> ' + data[0].candidateID);                
+                $('div#eqScore .w3-container h5').html(data[0].message);
+                $('div#eqScore .w3-container span').html('<strong>Date:</strong> ' + data[0].date);
+                $("#eqScore").children().prop('disabled', false);
             });
     });
 

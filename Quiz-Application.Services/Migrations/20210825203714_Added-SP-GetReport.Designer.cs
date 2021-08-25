@@ -10,8 +10,8 @@ using Quiz_Application.Services;
 namespace Quiz_Application.Services.Migrations
 {
     [DbContext(typeof(QuizDBContext))]
-    [Migration("20210825192951_Added sp GetReport")]
-    partial class AddedspGetReport
+    [Migration("20210825203714_Added-SP-GetReport")]
+    partial class AddedSPGetReport
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
