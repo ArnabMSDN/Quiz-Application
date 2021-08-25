@@ -1,18 +1,19 @@
-﻿using Quiz_Application.Services.Entities;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
+using Quiz_Application.Services.Entities;
+using Quiz_Application.Services.Repository.Interfaces;
 
-namespace Quiz_Application.Services.Repository.Candidate
+namespace Quiz_Application.Services.Repository.Base
 {
-    public class Candidate<TEntity> : ICandidate<TEntity> where TEntity : BaseEntity
+    public class CandidateService<TEntity> : ICandidate<TEntity> where TEntity : BaseEntity
     {
         private readonly QuizDBContext _dbContext;
         private DbSet<TEntity> _dbSet;
-        public Candidate(QuizDBContext dbContext)
+        public CandidateService(QuizDBContext dbContext)
         {
             _dbContext = dbContext;
             _dbSet = dbContext.Set<TEntity>();
@@ -36,7 +37,7 @@ namespace Quiz_Application.Services.Repository.Candidate
             return query;
         }
 
-        public async Task<int> InsertCandidate(TEntity entity)
+        public async Task<int> AddCandidate(TEntity entity)
         {
             int output = 0;
             _dbSet.Add(entity);

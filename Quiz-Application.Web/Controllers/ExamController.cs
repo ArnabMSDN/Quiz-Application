@@ -1,44 +1,36 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Quiz_Application.Web.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Quiz_Application.Web.Authentication;
 using Quiz_Application.Services.Entities;
-using Quiz_Application.Services.Repository.Exam;
-using Quiz_Application.Services.Repository.Question;
+using Quiz_Application.Web.Models;
+using Quiz_Application.Services.Repository.Interfaces;
+
 
 namespace Quiz_Application.Web.Controllers
-{
-    [BasicAuthentication]
+{    
+    [BasicAuthentication]   
     public class ExamController : Controller
     {
         private readonly ILogger<ExamController> _logger;
         private readonly IExam<Services.Entities.Exam> _exam;
         private readonly IQuestion<Services.Entities.Question> _question;
-        public ExamController(ILogger<ExamController> logger, IExam<Services.Entities.Exam> exam, IQuestion<Services.Entities.Question> question)
+        private readonly IResult<Services.Entities.Result> _result;
+        public ExamController(ILogger<ExamController> logger, IExam<Services.Entities.Exam> exam, IQuestion<Services.Entities.Question> question, IResult<Services.Entities.Result> result)
         {
             _logger = logger;
             _exam = exam;
             _question = question;
+            _result = result;
         }
-        // GET: ExamController
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        // GET: ExamController/Details/5
-        public IActionResult Details(int id)
-        {
-            return View();
-        }
-
+             
         [HttpGet]
-        public async Task<IActionResult> ExamList()
+        [Route("~/api/Exams")]
+        public async Task<IActionResult> Exams()
         {           
             try
             {
@@ -49,11 +41,14 @@ namespace Quiz_Application.Web.Controllers
             {
                 throw new Exception(ex.Message, ex.InnerException);
             }
-            finally { }
+            finally 
+            {
+            }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> ExamDetails(int ExamID)
+        [HttpGet]
+        [Route("~/api/Exam/{ExamID?}")]
+        public async Task<IActionResult> Exam(int ExamID)
         {
             try
             {
@@ -64,10 +59,13 @@ namespace Quiz_Application.Web.Controllers
             {
                 throw new Exception(ex.Message, ex.InnerException);
             }
-            finally { }
+            finally 
+            {
+            }
         }
 
-        [HttpPost]
+        [HttpGet]
+        [Route("~/api/Questions/{ExamID?}")]
         public async Task<IActionResult> Questions(int ExamID)
         {
             try
@@ -79,74 +77,60 @@ namespace Quiz_Application.Web.Controllers
             {
                 throw new Exception(ex.Message, ex.InnerException);
             }
-            finally { }
+            finally 
+            {
+            }
         }
 
-
-        #region CRUD
-        // GET: ExamController/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: ExamController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(IFormCollection collection)
+        [Route("~/api/Score")]       
+        public async Task<IActionResult> Score(List<Request> objRequest)
         {
+            int i = 0;
+            bool IsCorrect = false;
+            List<Result> objList = null;
+            string _SessionID = null;
             try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+            {               
+                if (objRequest.Count > 0)
+                {
+                    _SessionID = Guid.NewGuid().ToString() + "-" + DateTime.Now;
+                    objList = new List<Result>();
+                    foreach (var item in objRequest)
+                    {
+                        if (item.AnswerID == item.SelectedOption)
+                            IsCorrect = true;
+                        else
+                            IsCorrect = false;
 
-        // GET: ExamController/Edit/5
-        public IActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: ExamController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
+                        Result obj = new Result()
+                        {
+                            CandidateID = item.CandidateID,
+                            ExamID = item.ExamID,
+                            QuestionID = item.QuestionID,
+                            AnswerID = item.AnswerID,
+                            SelectedOptionID = item.SelectedOption,
+                            IsCorrent = IsCorrect,
+                            SessionID= _SessionID,
+                            CreatedBy = "SYSTEM",
+                            CreatedOn = DateTime.Now
+                        };
+                        objList.Add(obj);
+                    }
+                    i = await _result.AddResult(objList);
+                }
+               
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                i = 0;
+                throw new Exception(ex.Message, ex.InnerException);           
             }
-        }
-
-        // GET: ExamController/Delete/5
-        public IActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ExamController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
+            finally
+            {                
             }
-            catch
-            {
-                return View();
-            }
+            return Ok(i);
         }
-
-        #endregion
+        
     }
 }

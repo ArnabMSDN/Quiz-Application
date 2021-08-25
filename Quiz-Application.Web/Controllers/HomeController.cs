@@ -2,17 +2,16 @@
 using Microsoft.Extensions.Logging;
 using Quiz_Application.Web.Models;
 using System;
-using System.Collections.Generic;
+using System.IO;
+using System.Net;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Quiz_Application.Web.Authentication;
 using Microsoft.AspNetCore.Http;
-using Quiz_Application.Web.Common;
+using Quiz_Application.Web.Extensions;
 using Quiz_Application.Services.Entities;
-using System.IO;
-using System.Net;
-using Quiz_Application.Services.Repository.Candidate;
+using Quiz_Application.Web.Authentication;
+using Quiz_Application.Services.Repository.Interfaces;
 
 namespace Quiz_Application.Web.Controllers
 {

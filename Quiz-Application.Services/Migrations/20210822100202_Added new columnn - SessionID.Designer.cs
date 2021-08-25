@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Quiz_Application.Services;
 
 namespace Quiz_Application.Services.Migrations
 {
     [DbContext(typeof(QuizDBContext))]
-    partial class QuizDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210822100202_Added new columnn - SessionID")]
+    partial class AddednewcolumnnSessionID
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,27 +55,6 @@ namespace Quiz_Application.Services.Migrations
                     b.HasKey("Sl_No");
 
                     b.ToTable("Answer");
-                });
-
-            modelBuilder.Entity("Quiz_Application.Services.Entities.Attempt", b =>
-                {
-                    b.Property<string>("Date")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Exam")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ExamID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Score")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SessionID")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Sl_No")
-                        .HasColumnType("int");
                 });
 
             modelBuilder.Entity("Quiz_Application.Services.Entities.Candidate", b =>
@@ -227,27 +208,6 @@ namespace Quiz_Application.Services.Migrations
                     b.HasKey("QuestionID");
 
                     b.ToTable("Question");
-                });
-
-            modelBuilder.Entity("Quiz_Application.Services.Entities.Report", b =>
-                {
-                    b.Property<int>("CandidateID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Date")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Exam")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ExamID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Message")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SessionID")
-                        .HasColumnType("nvarchar(max)");
                 });
 
             modelBuilder.Entity("Quiz_Application.Services.Entities.Result", b =>

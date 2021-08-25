@@ -1,20 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Quiz_Application.Services.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Quiz_Application.Services.Entities;
+using Quiz_Application.Services.Repository.Interfaces;
 
-
-namespace Quiz_Application.Services.Repository.Question
+namespace Quiz_Application.Services.Repository.Base
 {
-    public class Question<TEntity> : IQuestion<TEntity> where TEntity : BaseEntity
+    public class QuestionService<TEntity> : IQuestion<TEntity> where TEntity : BaseEntity
     {
        private readonly QuizDBContext _dbContext;
        private DbSet<TEntity> _dbSet;
-       public Question(QuizDBContext dbContext)
+       public QuestionService(QuizDBContext dbContext)
         {
             _dbContext = dbContext;
             _dbSet = dbContext.Set<TEntity>();
@@ -29,9 +28,9 @@ namespace Quiz_Application.Services.Repository.Question
         {
             QnA objQnA = null;
             AnswerDetails _objA = null;
-            List<QuestionDetails> _objQlst = new List<QuestionDetails>();            
-           
-            var questions =await _dbContext.Question.Where(q => q.ExamID == ExamID).ToListAsync();
+            List<QuestionDetails> _objQlst = new List<QuestionDetails>();
+            string _examName = await  _dbContext.Exam.Where(e => e.ExamID == ExamID).Select(o => o.Name).SingleOrDefaultAsync();
+            var questions = await _dbContext.Question.Where(q => q.ExamID == ExamID).ToListAsync();
             foreach (var Qitem in questions)
             {
                 List<OptionDetails> _objOlst = new List<OptionDetails>();
@@ -69,12 +68,13 @@ namespace Quiz_Application.Services.Repository.Question
             objQnA = new QnA()
             {
                 ExamID = ExamID,
+                Exam= _examName,
                 questions = _objQlst
             };
             return objQnA;
         }
 
-       public Task<int> InsertQuestion(TEntity entity)
+       public Task<int> AddQuestion(TEntity entity)
         {
             throw new NotImplementedException();
         }
