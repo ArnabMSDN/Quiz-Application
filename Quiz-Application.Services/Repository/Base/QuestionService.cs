@@ -9,11 +9,11 @@ using Quiz_Application.Services.Repository.Interfaces;
 
 namespace Quiz_Application.Services.Repository.Base
 {
-    public class Question<TEntity> : IQuestion<TEntity> where TEntity : BaseEntity
+    public class QuestionService<TEntity> : IQuestion<TEntity> where TEntity : BaseEntity
     {
        private readonly QuizDBContext _dbContext;
        private DbSet<TEntity> _dbSet;
-       public Question(QuizDBContext dbContext)
+       public QuestionService(QuizDBContext dbContext)
         {
             _dbContext = dbContext;
             _dbSet = dbContext.Set<TEntity>();

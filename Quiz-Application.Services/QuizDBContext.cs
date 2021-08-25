@@ -19,5 +19,13 @@ namespace Quiz_Application.Services
         public virtual DbSet<Answer> Answer { get; set; }
         public virtual DbSet<Result> Result { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Attempt>(eb =>
+            {
+                eb.HasNoKey();
+                eb.ToView(null);
+            });            
+        }
     }
 }

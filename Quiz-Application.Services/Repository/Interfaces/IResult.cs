@@ -9,8 +9,8 @@ namespace Quiz_Application.Services.Repository.Interfaces
 {
     public interface IResult<TEntity>
     {
-        Task<IEnumerable<TEntity>> GetResult(List<Request> entity);
-        Task<IEnumerable<TEntity>> ScoreReport(int CandidateID);
+        Task<IEnumerable<Attempt>> GetAttemptHistory(string argCandidateID);
+        Task<IEnumerable<TEntity>> ScoreReport(ReqReport argRpt);
         Task<int> AddResult(List<TEntity> entity);
     }
 }

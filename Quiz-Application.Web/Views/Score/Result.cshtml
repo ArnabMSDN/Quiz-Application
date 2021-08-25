@@ -1,45 +1,56 @@
-﻿@{
+﻿@model Quiz_Application.Services.Entities.Root
+@{
     ViewData["Title"] = "Result";
-    //Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
-   
-        <div class="w3-card-4 w3-round">
-            <header class="w3-container w3-light-grey">
-                <h3>Quiz Result</h3>
-            </header>
-
-            <div class="w3-container">
-                <p> <i class="fa fa-address-card fa-fw w3-margin-right w3-text-theme"></i>   Candidate ID :</p>
-                <p><i class="fa fa-user fa-fw w3-margin-right w3-text-theme"></i> Candidate Name :</p>
-                <p>
-                    <table class="w3-table-all w3-small">
-                        <tr class="w3-blue">
-                            <th>Quiz Name</th>
-                            <th>Score</th>
-                            <th>Duration</th>
-                            <th>Details</th>
-                        </tr>
-                        <tr>
-                            <td>Eve</td>
-                            <td>Jackson</td>
-                            <td>94</td>
-                            <td>94</td>
-                        </tr>
-                        <tr>
-                            <td>Adam</td>
-                            <td>Johnson</td>
-                            <td>67</td>
-                            <td>94</td>
-                        </tr>
-                    </table>
-                </p>
-                <hr>
-                <img src="img_avatar3.png" alt="Avatar" class="w3-left w3-circle">
-                <p>President/CEO at Mighty Schools...</p>
-            </div>
-            <button class="w3-button w3-block w3-dark-grey">+ Connect</button>
+<div class="w3-container w3-content" style="max-width:1200px;margin-top:80px">
+    <h2>Quiz Attempt</h2>
+    <p>
+        <table class="w3-table-all w3-centered w3-card-4 w3-white w3-round">
+            <tr class="w3-blue">
+                <th>Sl. No.</th>
+                <th style="display:none;">SessionID</th>
+                <th>Quiz</th>
+                <th>Score</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+            @if (Model.objAttempt.Count > 0)
+            {
+                foreach (var item in Model.objAttempt)
+                {
+                <tr>
+                   <td>@item.Sl_No</td>
+                   <td style="display:none;">>@item.SessionID</td>
+                   <td>@item.Exam</td>
+                   <td>@item.Score</td>
+                   <td>@item.Date</td>
+                   <td><button id="btnScore" class="w3-button w3-tiny w3-light-green">Get Report</button></td>
+                </tr>
+                }
+            }
+            else
+            {
+                <tr><td colspan="6">No Records Found</td></tr>
+            }
+        </table>
+    </p>
+    <div id="eqScore" class="w3-card-4 w3-round w3-white" >
+        <header class="w3-container w3-light-grey">
+            <h3>Loading...</h3> @*Quiz Name*@
+        </header>
+        <div class="w3-container">
+            <p>Loading...</p>@*1 new friend request*@
+            <hr>
+            <img src="https://icon-library.com/images/win-icon/win-icon-4.jpg" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+            <p>
+                @*Opps! You gave 0 correct answers out of 20 questions in 00:04 minutes.
+                    You really need to work hard to become an expert.*@
+                Loading...
+            </p><br>
         </div>
-        <br />
+        <hr />
+        <button class="w3-button w3-block w3-blue"><i class="fa fa-download"></i>  Download Report</button>
     </div>
+</div>
+<br />

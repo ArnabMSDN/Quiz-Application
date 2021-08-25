@@ -21,6 +21,8 @@ $(document).ready(function () {
     $('#eqMain button.w3-left').prop('disabled', true);
     $('#eqMain button.w3-right').prop('disabled', true);
     $("#eqReport").children().prop('disabled', true);
+    $("#eqScore").children().prop('disabled', true);
+
     $.ajax({
         type: "GET",
         url: "/api/Exams",

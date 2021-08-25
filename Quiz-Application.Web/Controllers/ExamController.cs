@@ -41,7 +41,9 @@ namespace Quiz_Application.Web.Controllers
             {
                 throw new Exception(ex.Message, ex.InnerException);
             }
-            finally { }
+            finally 
+            {
+            }
         }
 
         [HttpGet]
