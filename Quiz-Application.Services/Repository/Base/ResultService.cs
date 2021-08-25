@@ -50,9 +50,20 @@ namespace Quiz_Application.Services.Repository.Base
             {
             }
         }
-        public async Task<IEnumerable<TEntity>> ScoreReport(ReqReport argRpt)
+        public async Task<IEnumerable<Report>> ScoreReport(ReqReport argRpt)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<Report> obj = await _dbContext.Set<Report>().FromSqlRaw(@"EXEC GetReport {0},{1},{2}", argRpt.ExamID, argRpt.CandidateID, argRpt.SessionID).ToListAsync();  
+                return obj;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex.InnerException);
+            }
+            finally
+            {
+            }
         }
     
     }   

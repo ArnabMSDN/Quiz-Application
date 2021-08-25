@@ -83,8 +83,8 @@ namespace Quiz_Application.Web.Controllers
         }
 
         [HttpPost]
-        [Route("~/api/Result")]       
-        public async Task<IActionResult> Result(List<Request> objRequest)
+        [Route("~/api/Score")]       
+        public async Task<IActionResult> Score(List<Request> objRequest)
         {
             int i = 0;
             bool IsCorrect = false;

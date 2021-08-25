@@ -28,10 +28,13 @@ namespace Quiz_Application.Web.Controllers
        {
             try
             {
-                Candidate objCandidate = HttpContext.Session.GetObjectFromJson<Candidate>("AuthenticatedUser");
+                Candidate _objCandidate = HttpContext.Session.GetObjectFromJson<Candidate>("AuthenticatedUser");
 
-                IEnumerable<Attempt> _obj = await _result.GetAttemptHistory(objCandidate.Candidate_ID);
-                Root objRoot = new Root(){ objAttempt = _obj.ToList() };               
+                IEnumerable<Attempt> _obj = await _result.GetAttemptHistory(_objCandidate.Candidate_ID);
+                Root objRoot = new Root(){
+                    objCandidate= _objCandidate,
+                    objAttempt = _obj.ToList() 
+                };               
                 return View(objRoot);
             }
             catch (Exception ex)
@@ -43,13 +46,13 @@ namespace Quiz_Application.Web.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("~/api/Report")]
         public async Task<IActionResult> Report(ReqReport argRpt)
         {
             try
             {
-                IEnumerable<Result> lst = await _result.ScoreReport(argRpt);
+                IEnumerable<Report> lst = await _result.ScoreReport(argRpt);
                 return Ok(lst.ToList());
             }
             catch (Exception ex)

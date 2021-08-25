@@ -10,7 +10,7 @@ namespace Quiz_Application.Services.Repository.Interfaces
     public interface IResult<TEntity>
     {
         Task<IEnumerable<Attempt>> GetAttemptHistory(string argCandidateID);
-        Task<IEnumerable<TEntity>> ScoreReport(ReqReport argRpt);
+        Task<IEnumerable<Report>> ScoreReport(ReqReport argRpt);
         Task<int> AddResult(List<TEntity> entity);
     }
 }

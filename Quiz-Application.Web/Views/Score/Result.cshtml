@@ -5,11 +5,13 @@
 
 <div class="w3-container w3-content" style="max-width:1200px;margin-top:80px">
     <h2>Quiz Attempt</h2>
+    <input asp-for="objCandidate.Candidate_ID" type="hidden" id="hdnCandidateID"/>
     <p>
         <table class="w3-table-all w3-centered w3-card-4 w3-white w3-round">
             <tr class="w3-blue">
                 <th>Sl. No.</th>
                 <th style="display:none;">SessionID</th>
+                <th style="display:none;">ExamID</th>
                 <th>Quiz</th>
                 <th>Score</th>
                 <th>Date</th>
@@ -19,23 +21,24 @@
             {
                 foreach (var item in Model.objAttempt)
                 {
-                <tr>
-                   <td>@item.Sl_No</td>
-                   <td style="display:none;">>@item.SessionID</td>
-                   <td>@item.Exam</td>
-                   <td>@item.Score</td>
-                   <td>@item.Date</td>
-                   <td><button id="btnScore" class="w3-button w3-tiny w3-light-green">Get Report</button></td>
-                </tr>
+        <tr>
+            <td>@item.Sl_No</td>
+            <td style="display:none;">@item.SessionID</td>
+            <td style="display:none;">@item.ExamID</td>
+            <td>@item.Exam</td>
+            <td>@item.Score</td>
+            <td>@item.Date</td>
+            <td><button id="btnScore" class="w3-button w3-tiny w3-light-green">Get Report</button></td>
+        </tr>
                 }
             }
             else
             {
-                <tr><td colspan="6">No Records Found</td></tr>
+                <tr><td colspan="7">No Records Found</td></tr>
             }
         </table>
     </p>
-    <div id="eqScore" class="w3-card-4 w3-round w3-white" >
+    <div id="eqScore" class="w3-card-4 w3-round w3-white">
         <header class="w3-container w3-light-grey">
             <h3>Loading...</h3> @*Quiz Name*@
         </header>

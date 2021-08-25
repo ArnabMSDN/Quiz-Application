@@ -176,7 +176,7 @@ $(document).ready(function () {
                     text: 'Submit',
                     btnClass: 'btn-red',
                     action: function () {
-                      $.post('/api/Result/', { objRequest: result },
+                        $.post('/api/Score/', { objRequest: result },
                          function (data) {
                              if (data > 0) {
                                  stop(checkTime);
@@ -213,6 +213,18 @@ $(document).ready(function () {
                 }
             }
         });
+    });
+
+    $('#btnScore').click(function () {
+        var request = {
+            ExamID: $(this).closest("tr").find('td:eq(2)').text(),
+            CandidateID: $('#hdnCandidateID').val(),            
+            SessionID: $(this).closest("tr").find('td:eq(1)').text()            
+        };
+        $.post('/api/Report/', { argRpt: request },
+            function (data) {
+                console.log(data);
+            });
     });
 
     function UpdateItem(QuestionID) {

@@ -13,12 +13,8 @@ namespace Quiz_Application.Services.Entities
        public int QuestionID { get; set; }
        public int AnswerID { get; set; }
        public int SelectedOption { get; set; }
-   }
-    public class Root
-    {
-        public List<Attempt> objAttempt { get; set; }      
-    }
-    public class Attempt
+   }  
+   public class Attempt
     {
         public int Sl_No { get; set; }
         public string SessionID { get; set; }
@@ -27,9 +23,25 @@ namespace Quiz_Application.Services.Entities
         public string Date { get; set; }
         public string Score { get; set; }
     }
-    public class ReqReport
+   public class ReqReport
     {
         public int ExamID { get; set; }
+        public string CandidateID { get; set; }
         public string SessionID { get; set; }
+    }
+   public class Report
+    {
+        public int CandidateID { get; set; }
+        public string SessionID { get; set; }
+        public int ExamID { get; set; }
+        public string Exam { get; set; }
+        public string Date { get; set; }
+        public string Message { get; set; }
+    }
+   public class Root
+    {
+        public Candidate objCandidate { get; set; }
+        public List<Attempt> objAttempt { get; set; }
+        public List<Report> objReport { get; set; }
     }
 }
