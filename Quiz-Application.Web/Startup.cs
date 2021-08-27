@@ -13,6 +13,8 @@ using Quiz_Application.Web.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using DinkToPdf.Contracts;
+using DinkToPdf;
 
 namespace Quiz_Application.Web
 {
@@ -36,6 +38,7 @@ namespace Quiz_Application.Web
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddDbContext<QuizDBContext>(options => options.UseSqlServer(connection));
             services.AddSingleton<BasicAuthentication>();
+            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

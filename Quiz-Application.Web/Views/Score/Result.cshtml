@@ -15,6 +15,7 @@
                 <th>Quiz</th>
                 <th>Score</th>
                 <th>Date</th>
+                <th style="display:none;">Status</th>
                 <th>Action</th>
             </tr>
             @if (Model.objAttempt.Count > 0)
@@ -28,6 +29,7 @@
                         <td>@item.Exam</td>
                         <td>@item.Score</td>
                         <td>@item.Date</td>
+                        <td style="display:none;">@item.Status</td>
                         <td><button class="w3-button w3-tiny w3-light-green btnScore">Get Report</button></td>
                     </tr>
                 }
@@ -43,7 +45,7 @@
             <h3>Loading...</h3>
         </header>
         <div class="w3-container">
-            <p>Loading...</p>           
+            <p>Loading...</p>
             <hr>
             <img src="https://icon-library.com/images/win-icon/win-icon-4.jpg" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
             <h5>Loading...</h5>
@@ -51,7 +53,7 @@
             <span class="w3-right w3-opacity"></span>
         </div>
         <hr />
-        <button class="w3-button w3-block w3-blue"><i class="fa fa-download"></i>  Download Report</button>
+        <button id="btnReport" class="w3-button w3-block w3-blue"><i class="fa fa-download"></i>  Download Report</button>
     </div>
 </div>
 <br />

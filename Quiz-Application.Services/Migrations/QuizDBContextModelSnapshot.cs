@@ -55,27 +55,6 @@ namespace Quiz_Application.Services.Migrations
                     b.ToTable("Answer");
                 });
 
-            modelBuilder.Entity("Quiz_Application.Services.Entities.Attempt", b =>
-                {
-                    b.Property<string>("Date")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Exam")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ExamID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Score")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SessionID")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Sl_No")
-                        .HasColumnType("int");
-                });
-
             modelBuilder.Entity("Quiz_Application.Services.Entities.Candidate", b =>
                 {
                     b.Property<int>("Sl_No")
@@ -229,7 +208,28 @@ namespace Quiz_Application.Services.Migrations
                     b.ToTable("Question");
                 });
 
-            modelBuilder.Entity("Quiz_Application.Services.Entities.Report", b =>
+            modelBuilder.Entity("Quiz_Application.Services.Entities.QuizAttempt", b =>
+                {
+                    b.Property<string>("Date")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Exam")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ExamID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Score")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SessionID")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Sl_No")
+                        .HasColumnType("int");
+                });
+
+            modelBuilder.Entity("Quiz_Application.Services.Entities.QuizReport", b =>
                 {
                     b.Property<int>("CandidateID")
                         .HasColumnType("int");

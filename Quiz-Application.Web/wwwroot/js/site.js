@@ -5,6 +5,8 @@
 $(document).ready(function () {
     
     var ExmID = 0;
+    var Score = null;
+    var Status = null;
     var QuestionID = 0;
     var AnswerID = 0;
     var Duration = 0;
@@ -13,6 +15,7 @@ $(document).ready(function () {
     var objData = [];
     var result = [];
     var checkTime = [];
+    var objReport = null;
 
     $('#ddlExam').prop('disabled', false);
     $('#btnStart').prop('disabled', false);
@@ -221,14 +224,41 @@ $(document).ready(function () {
             CandidateID: $('#hdnCandidateID').val(),            
             SessionID: $(this).closest("tr").find('td:eq(1)').text()            
         };
+        Score = $(this).closest("tr").find('td:eq(4)').text();
+        Status = $(this).closest("tr").find('td:eq(6)').text();
         $.post('/api/Report/', { argRpt: request },
-            function (data) {                
-                $('div#eqScore h3').html(data[0].exam+' Test');
-                $('div#eqScore .w3-container p:eq(0)').html('<strong>Candidate ID:</strong> ' + data[0].candidateID);                
+            function (data) {
+                objReport = data;
+                $('div#eqScore h3').html(data[0].exam + ' Test');
+                $('div#eqScore .w3-container p:eq(0)').html('<strong>Candidate ID:</strong> ' + data[0].candidateID);
                 $('div#eqScore .w3-container h5').html(data[0].message);
                 $('div#eqScore .w3-container span').html('<strong>Date:</strong> ' + data[0].date);
-                $("#eqScore").children().prop('disabled', false);
+                if (Status == "1") {
+                    $("#eqScore").children().prop('disabled', false);
+                }
+                else { $("#eqScore").children().prop('disabled', true);
+                }
             });
+    });
+
+    $('#btnReport').click(function () {
+        console.log(objReport);
+        var scoreFormat = {
+            ExamID: objReport[0].examID,
+            CandidateID: $('#hdnCandidateID').val(),
+            SessionID: objReport[0].sessionID,
+            Exam: objReport[0].exam,
+            Date: objReport[0].date,
+            Score: Score
+        };
+        console.log(scoreFormat);
+        $.post('/api/CreatePDF/', { argPDFRpt:scoreFormat},
+            function (data) {
+                console.log(data);
+                window.open(data.path, '_blank');
+            });       
+        objReport = [];
+        Score = null;
     });
 
     function UpdateItem(QuestionID) {
