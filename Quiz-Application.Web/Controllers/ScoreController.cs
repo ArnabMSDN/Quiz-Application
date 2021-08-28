@@ -23,11 +23,11 @@ namespace Quiz_Application.Web.Controllers
        private readonly IResult<Services.Entities.Result> _result;
 
        public ScoreController(ILogger<ScoreController> logger, IResult<Services.Entities.Result> result, IConverter converter)
-        {
+       {
             _logger = logger;
             _result = result;
             _converter = converter;
-        }
+       }
 
        public async Task<IActionResult> Result()
        {

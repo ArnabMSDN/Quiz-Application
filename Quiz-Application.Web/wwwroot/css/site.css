@@ -1,7 +1,6 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
-
 .file-upload {
     display: block;
     text-align: center;
@@ -9,7 +8,7 @@ for details on configuring this project to bundle and minify static web assets. 
     font-size: 12px;
 }
 
-    .file-upload .file-select {
+.file-upload .file-select {
         display: block;
         border: 2px solid #dce4ec;
         color: #34495e;
@@ -22,7 +21,7 @@ for details on configuring this project to bundle and minify static web assets. 
         position: relative;
     }
 
-        .file-upload .file-select .file-select-button {
+.file-upload .file-select .file-select-button {
             background: #dce4ec;
             padding: 0 10px;
             display: inline-block;
@@ -30,13 +29,13 @@ for details on configuring this project to bundle and minify static web assets. 
             line-height: 40px;
         }
 
-        .file-upload .file-select .file-select-name {
+.file-upload .file-select .file-select-name {
             line-height: 40px;
             display: inline-block;
             padding: 0 10px;
         }
 
-        .file-upload .file-select:hover {
+.file-upload .file-select:hover {
             border-color: #34495e;
             transition: all .2s ease-in-out;
             -moz-transition: all .2s ease-in-out;
@@ -44,7 +43,7 @@ for details on configuring this project to bundle and minify static web assets. 
             -o-transition: all .2s ease-in-out;
         }
 
-            .file-upload .file-select:hover .file-select-button {
+.file-upload .file-select:hover .file-select-button {
                 background: #34495e;
                 color: #FFFFFF;
                 transition: all .2s ease-in-out;
@@ -53,7 +52,7 @@ for details on configuring this project to bundle and minify static web assets. 
                 -o-transition: all .2s ease-in-out;
             }
 
-    .file-upload.active .file-select {
+.file-upload.active .file-select {
         border-color: #3fa46a;
         transition: all .2s ease-in-out;
         -moz-transition: all .2s ease-in-out;
@@ -61,7 +60,7 @@ for details on configuring this project to bundle and minify static web assets. 
         -o-transition: all .2s ease-in-out;
     }
 
-        .file-upload.active .file-select .file-select-button {
+.file-upload.active .file-select .file-select-button {
             background: #3fa46a;
             color: #FFFFFF;
             transition: all .2s ease-in-out;
@@ -70,7 +69,7 @@ for details on configuring this project to bundle and minify static web assets. 
             -o-transition: all .2s ease-in-out;
         }
 
-    .file-upload .file-select input[type=file] {
+.file-upload .file-select input[type=file] {
         z-index: 100;
         cursor: pointer;
         position: absolute;
@@ -82,11 +81,11 @@ for details on configuring this project to bundle and minify static web assets. 
         filter: alpha(opacity=0);
     }
 
-    .file-upload .file-select.file-select-disabled {
+.file-upload .file-select.file-select-disabled {
         opacity: 0.65;
     }
 
-        .file-upload .file-select.file-select-disabled:hover {
+.file-upload .file-select.file-select-disabled:hover {
             cursor: default;
             display: block;
             border: 2px solid #dce4ec;
@@ -101,7 +100,7 @@ for details on configuring this project to bundle and minify static web assets. 
             position: relative;
         }
 
-            .file-upload .file-select.file-select-disabled:hover .file-select-button {
+.file-upload .file-select.file-select-disabled:hover .file-select-button {
                 background: #dce4ec;
                 color: #666666;
                 padding: 0 10px;
@@ -110,7 +109,7 @@ for details on configuring this project to bundle and minify static web assets. 
                 line-height: 40px;
             }
 
-            .file-upload .file-select.file-select-disabled:hover .file-select-name {
+.file-upload .file-select.file-select-disabled:hover .file-select-name {
                 line-height: 40px;
                 display: inline-block;
                 padding: 0 10px;

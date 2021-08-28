@@ -40,6 +40,18 @@ namespace Quiz_Application.Web.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Profile(int? id)
+        {            
+            return View();
+        }
+       
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Profile([FromForm] ProfileViewModel objCollection)
+        {            
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

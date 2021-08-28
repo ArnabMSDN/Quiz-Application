@@ -24,6 +24,8 @@ $(document).ready(function () {
     $('#eqMain button.w3-left').prop('disabled', true);
     $('#eqMain button.w3-right').prop('disabled', true);
     $("#eqReport").children().prop('disabled', true);
+    $('#eqReport a').removeAttr("href");
+    $('#eqReport i').addClass("w3-opacity-max");
     $("#eqScore").children().prop('disabled', true);
 
     $.ajax({
@@ -185,6 +187,8 @@ $(document).ready(function () {
                                  stop(checkTime);
                                  $('#btnSubmit').prop('disabled', true);
                                  $("#eqReport").children().prop('disabled', false);
+                                 $("#eqReport a").attr("href", "/Score/Result");
+                                 $('#eqReport i').removeClass("w3-opacity-max");
                                  $.alert({
                                      type: 'green',
                                      title: 'Success !',
@@ -198,6 +202,8 @@ $(document).ready(function () {
                              else {
                                  $('#btnSubmit').prop('disabled', false);
                                  $("#eqReport").children().prop('disabled', true);
+                                 $('#eqReport a').removeAttr("href");
+                                 $('#eqReport i').addClass("w3-opacity-max");
                                  $.alert({
                                      type: 'red',
                                      title: 'Error !',
@@ -236,13 +242,16 @@ $(document).ready(function () {
                 if (Status == "1") {
                     $("#eqScore").children().prop('disabled', false);
                 }
-                else { $("#eqScore").children().prop('disabled', true);
+                else {
+                    Score = null;
+                    objReport = null;
+                    $("#eqScore").children().prop('disabled', true);
                 }
             });
     });
 
     $('#btnReport').click(function () {
-        console.log(objReport);
+        //console.log(objReport);
         var scoreFormat = {
             ExamID: objReport[0].examID,
             CandidateID: $('#hdnCandidateID').val(),
@@ -251,14 +260,12 @@ $(document).ready(function () {
             Date: objReport[0].date,
             Score: Score
         };
-        console.log(scoreFormat);
+        //console.log(scoreFormat);
         $.post('/api/CreatePDF/', { argPDFRpt:scoreFormat},
-            function (data) {
-                console.log(data);
-                window.open(data.path, '_blank');
-            });       
-        objReport = [];
-        Score = null;
+           function (data) {
+                //console.log(data);
+                if (data.isSuccess = true) { window.open(data.path, '_blank'); }
+           });       
     });
 
     function UpdateItem(QuestionID) {

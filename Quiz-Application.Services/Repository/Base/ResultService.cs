@@ -31,7 +31,7 @@ namespace Quiz_Application.Services.Repository.Base
             try
             {
                 List<QuizAttempt> obj = await _dbContext.Set<QuizAttempt>().FromSqlRaw(@"SELECT
-                CAST(ROW_NUMBER() OVER (ORDER BY R.SessionID) AS int) Sl_No,
+                CAST(ROW_NUMBER() OVER (ORDER BY R.CreatedOn DESC) AS int) Sl_No,
                 R.SessionID,
                 R.ExamID,
                 E.Name AS Exam,
