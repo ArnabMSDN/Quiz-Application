@@ -268,6 +268,11 @@ $(document).ready(function () {
            });       
     });
 
+    $('#chooseFile').change(function () {
+      var file = $('#chooseFile')[0].files[0].name;
+      $('#noFile').text(file);
+    });
+    
     function UpdateItem(QuestionID) {
         for (var i in result) {
             if (result[i].QuestionID == QuestionID) {               
@@ -333,10 +338,16 @@ $(document).ready(function () {
 
 });
 
-//$('#chooseFile').change(function () {
-//    var file = $('#chooseFile')[0].files[0].name;
-//    $('#noFile').text(file);
-//});
+//Image Upload Preview  
+function ShowImagePreview(input) {
+   if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#imgCandidate').prop('src', e.target.result);
+        };
+        reader.readAsDataURL(input.files[0]);
+   }
+}
 
 //function SaveImage() {
 //    var formData = new FormData();
@@ -356,16 +367,7 @@ $(document).ready(function () {
 //    });
 //}
 
-////Image Upload Preview  
-//function ShowImagePreview(input) {
-//    if (input.files && input.files[0]) {
-//        var reader = new FileReader();
-//        reader.onload = function (e) {
-//            $('#imgProfile').prop('src', e.target.result);
-//        };
-//        reader.readAsDataURL(input.files[0]);
-//    }
-//}
+
 
 
 

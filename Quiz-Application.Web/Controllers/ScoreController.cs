@@ -77,7 +77,7 @@ namespace Quiz_Application.Web.Controllers
             try
             {                
                 string html = await _result.GetCertificateString(argPDFRpt);
-                string UploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "UploadedFiles\\Report");
+                string UploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "UploadedFiles/Report");
                 string UniqueFileName = argPDFRpt.CandidateID + "_Certificate.pdf";
                 string UploadPath = Path.Combine(UploadFolder, UniqueFileName);
                 var globalSettings = new GlobalSettings

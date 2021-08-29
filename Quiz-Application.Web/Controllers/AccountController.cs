@@ -105,7 +105,7 @@ namespace Quiz_Application.Web.Controllers
                 {
                     if (string.IsNullOrEmpty(value))
                     {
-                        IQueryable<Services.Entities.Candidate> candidate = await _candidate.SearchCandidate(x => x.Email.Equals(objCollection.Email) && x.Password.Equals(objCollection.Password));
+                        IQueryable<Services.Entities.Candidate> candidate = await _candidate.SearchCandidate(x => x.Email.Equals(objCollection.Email) && x.Password.Equals(objCollection.Password.EncodeBase64()));
                         if (candidate.Any())
                         {
                             Services.Entities.Candidate _candidate = new Services.Entities.Candidate();

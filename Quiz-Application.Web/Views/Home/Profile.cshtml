@@ -127,10 +127,18 @@
         <div class="w3-col m12">
             <div class="w3-card-4 w3-round w3-white">
                 <div class="w3-container w3-blue"><h2>Edit Profile</h2></div>
-                <form asp-action="Profile" class="w3-container">
+                <form asp-controller="Home" asp-action="Profile"  class="w3-container" enctype="multipart/form-data" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <p><input type="hidden" asp-for="Sl_No"/></p>
                     <p class="w3-center">
-                        <img src="https://www.w3schools.com/w3images/avatar3.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar" id="imgProfile">
+                        @if (@Model.ImgFile != null)
+                        {
+                            <img src="~/UploadedFiles/Image/@Model.ImgFile" class="w3-circle" style="height:106px;width:106px" alt="Avatar" id="imgCandidate">
+                        }
+                        else
+                        {
+                            <img src="https://www.w3schools.com/w3images/avatar3.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar" id="imgCandidate">
+                        }
                     </p>
                     <p>
                         <b><label asp-for="Name" class="w3-text-blue"></label></b>
@@ -158,7 +166,7 @@
                             <div class="file-select">
                                 <div class="file-select-button" id="fileName">Choose File</div>
                                 <div class="file-select-name" id="noFile">No file chosen...</div>
-                                <input type="file" name="chooseFile" id="chooseFile">
+                                <input id="chooseFile" asp-for="file" onchange="ShowImagePreview(this);" accept="image/*">
                             </div>
                         </div>
                     </p>
