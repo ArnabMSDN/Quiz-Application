@@ -7,14 +7,14 @@
 
     /****** CODE ******/
 
-    .file-upload {
+ .file-upload {
         display: block;
         text-align: center;
         font-family: Helvetica, Arial, sans-serif;
         font-size: 12px;
     }
 
-        .file-upload .file-select {
+ .file-upload .file-select {
             display: block;
             border: 2px solid #dce4ec;
             color: #34495e;
@@ -27,7 +27,7 @@
             position: relative;
         }
 
-            .file-upload .file-select .file-select-button {
+ .file-upload .file-select .file-select-button {
                 background: #dce4ec;
                 padding: 0 10px;
                 display: inline-block;
@@ -35,13 +35,13 @@
                 line-height: 40px;
             }
 
-            .file-upload .file-select .file-select-name {
+ .file-upload .file-select .file-select-name {
                 line-height: 40px;
                 display: inline-block;
                 padding: 0 10px;
             }
 
-            .file-upload .file-select:hover {
+ .file-upload .file-select:hover {
                 border-color: #34495e;
                 transition: all .2s ease-in-out;
                 -moz-transition: all .2s ease-in-out;
@@ -49,7 +49,7 @@
                 -o-transition: all .2s ease-in-out;
             }
 
-                .file-upload .file-select:hover .file-select-button {
+ .file-upload .file-select:hover .file-select-button {
                     background: #34495e;
                     color: #FFFFFF;
                     transition: all .2s ease-in-out;
@@ -58,7 +58,7 @@
                     -o-transition: all .2s ease-in-out;
                 }
 
-        .file-upload.active .file-select {
+ .file-upload.active .file-select {
             border-color: #3fa46a;
             transition: all .2s ease-in-out;
             -moz-transition: all .2s ease-in-out;
@@ -66,7 +66,7 @@
             -o-transition: all .2s ease-in-out;
         }
 
-            .file-upload.active .file-select .file-select-button {
+ .file-upload.active .file-select .file-select-button {
                 background: #3fa46a;
                 color: #FFFFFF;
                 transition: all .2s ease-in-out;
@@ -75,7 +75,7 @@
                 -o-transition: all .2s ease-in-out;
             }
 
-        .file-upload .file-select input[type=file] {
+ .file-upload .file-select input[type=file] {
             z-index: 100;
             cursor: pointer;
             position: absolute;
@@ -87,11 +87,11 @@
             filter: alpha(opacity=0);
         }
 
-        .file-upload .file-select.file-select-disabled {
+ .file-upload .file-select.file-select-disabled {
             opacity: 0.65;
         }
 
-            .file-upload .file-select.file-select-disabled:hover {
+ .file-upload .file-select.file-select-disabled:hover {
                 cursor: default;
                 display: block;
                 border: 2px solid #dce4ec;
@@ -106,7 +106,7 @@
                 position: relative;
             }
 
-                .file-upload .file-select.file-select-disabled:hover .file-select-button {
+ .file-upload .file-select.file-select-disabled:hover .file-select-button {
                     background: #dce4ec;
                     color: #666666;
                     padding: 0 10px;
@@ -115,29 +115,31 @@
                     line-height: 40px;
                 }
 
-                .file-upload .file-select.file-select-disabled:hover .file-select-name {
+ .file-upload .file-select.file-select-disabled:hover .file-select-name {
                     line-height: 40px;
                     display: inline-block;
                     padding: 0 10px;
-                }
+  }
+
 </style>
 
 <div class="w3-container w3-content" style="max-width:900px;margin-top:80px">
+    <div class="row">@Html.Raw(@ViewBag.Alert)</div>
     <div class="row">
         <div class="w3-col m12">
             <div class="w3-card-4 w3-round w3-white">
                 <div class="w3-container w3-blue"><h2>Edit Profile</h2></div>
-                <form asp-controller="Home" asp-action="Profile"  class="w3-container" enctype="multipart/form-data" method="post">
+                <form asp-controller="Home" asp-action="Profile" class="w3-container" enctype="multipart/form-data" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <p><input type="hidden" asp-for="Sl_No"/></p>
+                    <p><input type="hidden" asp-for="Sl_No" /></p>
                     <p class="w3-center">
                         @if (@Model.ImgFile != null)
                         {
-                            <img src="~/UploadedFiles/Image/@Model.ImgFile" class="w3-circle" style="height:106px;width:106px" alt="Avatar" id="imgCandidate">
+                           <img src="~/UploadedFiles/Image/@Model.ImgFile" class="w3-circle" style="height:106px;width:106px" alt="Avatar" id="imgCandidate">
                         }
                         else
                         {
-                            <img src="https://www.w3schools.com/w3images/avatar3.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar" id="imgCandidate">
+                           <img src="https://www.w3schools.com/w3images/avatar3.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar" id="imgCandidate">
                         }
                     </p>
                     <p>
@@ -176,6 +178,6 @@
                 <br />
             </div>
         </div>
-    </div>
+    </div>        
 </div>
 <br />

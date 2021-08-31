@@ -29,9 +29,11 @@ namespace Quiz_Application.Web.Controllers
 
         [BasicAuthentication]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            Candidate objCandidate = HttpContext.Session.GetObjectFromJson<Candidate>("AuthenticatedUser");
+            Candidate objHis = HttpContext.Session.GetObjectFromJson<Candidate>("AuthenticatedUser");
+            IQueryable<Candidate> iqCandidate = await _candidate.SearchCandidate(e => e.Sl_No.Equals(objHis.Sl_No));
+            Candidate objCandidate = iqCandidate.FirstOrDefault();
             return View(objCandidate);
         }
 
@@ -42,7 +44,10 @@ namespace Quiz_Application.Web.Controllers
 
         public async Task<IActionResult> Profile()
         {
-            Candidate objCandidate = HttpContext.Session.GetObjectFromJson<Candidate>("AuthenticatedUser");
+            Candidate objHis= HttpContext.Session.GetObjectFromJson<Candidate>("AuthenticatedUser");
+            IQueryable<Candidate> iqCandidate =await _candidate.SearchCandidate(e=>e.Sl_No.Equals(objHis.Sl_No));
+            Candidate objCandidate = iqCandidate.FirstOrDefault();
+
             ProfileViewModel objModel = new ProfileViewModel()
             {
                 Sl_No = objCandidate.Sl_No,
@@ -50,8 +55,8 @@ namespace Quiz_Application.Web.Controllers
                 Candidate_ID = objCandidate.Candidate_ID,
                 Email = objCandidate.Email,
                 Phone = objCandidate.Phone,
-                ImgFile = objCandidate.ImgFile
-            };
+                ImgFile = objCandidate.ImgFile!=null ? objCandidate.ImgFile:null
+            };                   
             return View(objModel);
         }
 
@@ -60,15 +65,22 @@ namespace Quiz_Application.Web.Controllers
         public async Task<IActionResult> Profile([FromForm] ProfileViewModel argObj)
         {
             int i = 0;
+            string UploadFolder = null;
+            string UniqueFileName = null;
+            string UploadPath = null;
             if (ModelState.IsValid)
-            {
+            {                
                 try
                 {
-                    string UploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "UploadedFiles/Image");
-                    string UniqueFileName = Guid.NewGuid().ToString() + "_" + argObj.file.FileName;
-                    string UploadPath = Path.Combine(UploadFolder, UniqueFileName);
+                    if (argObj.file != null)
+                    {
+                        UploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "UploadedFiles/Image");
+                        UniqueFileName = Guid.NewGuid().ToString() + "_" + argObj.file.FileName;
+                        UploadPath = Path.Combine(UploadFolder, UniqueFileName);
+                    }
 
                     Candidate _objCandidate = await _candidate.GetCandidate(argObj.Sl_No);
+                    argObj.ImgFile = UniqueFileName;
                     _objCandidate.Name = argObj.Name;
                     _objCandidate.Candidate_ID = argObj.Candidate_ID;
                     _objCandidate.Phone = argObj.Phone;
@@ -76,25 +88,30 @@ namespace Quiz_Application.Web.Controllers
                     _objCandidate.ImgFile = UniqueFileName;
                     _objCandidate.ModifiedBy = argObj.Name;
                     _objCandidate.ModifiedOn = DateTime.Now;
-                    
+                                       
                     i = await _candidate.UpdateCandidate(_objCandidate);
                     if (i > 0)
                     {
-                        await argObj.file.CopyToAsync(new FileStream(UploadPath, FileMode.Create));
-                        return RedirectToAction("Logout", "Account");
+                        if (argObj.file != null)
+                        {
+                            await argObj.file.CopyToAsync(new FileStream(UploadPath, FileMode.Create));
+                        }                        
+                        ViewBag.Alert = AlertExtension.ShowAlert(Alerts.Success, "Profile updated successfully.");
                     }
-                    else
-                    {
-                        ViewBag.Alert = CommonService.ShowAlert(Alerts.Danger, "Unknown error");
-                    }
-
+                    else                    
+                        ViewBag.Alert = AlertExtension.ShowAlert(Alerts.Danger, "An error occurred.");                    
                 }
                 catch (Exception ex)
                 {
+                    ViewBag.Alert = AlertExtension.ShowAlert(Alerts.Danger, ex.Message);
                     throw new Exception(ex.Message, ex.InnerException);
                 }
             }
-            return View("Profile");
+            else
+                ModelState.AddModelError("Error","Unknown  Error.");
+
+            
+            return View(argObj);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

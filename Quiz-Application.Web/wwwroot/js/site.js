@@ -33,8 +33,8 @@ $(document).ready(function () {
         url: "/api/Exams",
         data: "{}",
         success: function (data) {
-            var string = '<option value="-1">--- Please Select ---</option>';
-            for (var i = 0; i < data.length; i++) { string += '<option value="' + data[i].examID + '">' + data[i].name + '</option>'; }
+           var string = '<option value="-1">--- Please Select ---</option>';
+           for (var i = 0; i < data.length; i++) { string += '<option value="' + data[i].examID + '">' + data[i].name + '</option>'; }
             $("#ddlExam").html(string);
         }
     });

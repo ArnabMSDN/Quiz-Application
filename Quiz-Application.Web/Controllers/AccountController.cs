@@ -50,17 +50,13 @@ namespace Quiz_Application.Web.Controllers
                     CreatedBy = "SYSTEM",
                     CreatedOn = DateTime.Now
                 };
-
+                
                 i = await _candidate.AddCandidate(_objcandidate);
 
-                if (i > 0)
-                {
-                    return RedirectToAction("Login", "Account");
-                }
-                else
-                { 
-                    ViewBag.Alert = CommonService.ShowAlert(Alerts.Danger, "Unknown error"); 
-                }
+                if (i > 0)                
+                    return RedirectToAction("Login", "Account");                
+                else                 
+                    ViewBag.Alert = AlertExtension.ShowAlert(Alerts.Danger, "Unknown error");                
             }                                       
             return PartialView("_Register");            
         }
@@ -150,7 +146,8 @@ namespace Quiz_Application.Web.Controllers
                 throw new Exception(ex.Message, ex.InnerException);
             }
             finally
-            { }
+            { 
+            }
         }
     }
 }
