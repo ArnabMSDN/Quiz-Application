@@ -42,6 +42,8 @@ namespace Quiz_Application.Web.Controllers
             return View();
         }
 
+        [BasicAuthentication]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> Profile()
         {
             Candidate objHis= HttpContext.Session.GetObjectFromJson<Candidate>("AuthenticatedUser");
