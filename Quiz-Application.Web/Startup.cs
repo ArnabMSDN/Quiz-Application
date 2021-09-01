@@ -56,14 +56,12 @@ namespace Quiz_Application.Web
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();
-            app.UseAuthorization();           
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                  name: "areas",
-                  pattern: "{area:exists}/{controller=Account}/{action=Login}/{id?}"
-                );
-                endpoints.MapDefaultControllerRoute();
+                    name: "default",
+                    pattern: "{controller=Account}/{action=Login}/{id?}");                    
             });
         }
     }
