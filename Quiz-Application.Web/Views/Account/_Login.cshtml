@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
-    <link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+    <link rel="icon" type="image/png" href="~/images/icons/favicon.ico" />
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="~/vendor/bootstrap/css/bootstrap.min.css">
     <!--===============================================================================================-->
@@ -30,7 +30,7 @@
 </head>
 <body>
 
-  <div class="limiter">
+    <div class="limiter">
         <div class="container-login100">
             <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-50">
                 <form class="login100-form validate-form" asp-action="Login" asp-controller="Account" method="post">
@@ -53,37 +53,44 @@
                     <div class="container-login100-form-btn m-t-20">
                         <button type="submit" class="login100-form-btn">Sign in</button>
                     </div>
-
                     <div class="text-center p-t-45 p-b-4">
                         <span class="txt1">Forgot</span>
                         <a href="#" class="txt2 hov1">Username / Password?</a>
                     </div>
-
-                    <div class="text-center">
+                    <div class="text-center p-b-4">
                         <span class="txt1">Create an account?</span>
                         <a asp-controller="Account" asp-action="Register" class="txt2 hov1">Sign up</a>
                     </div>
+                    @if (TempData["Message"] != null)
+                    {
+                       <div class="text-center">
+                           <div class="alert alert-danger alert-dismissible">
+                               <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                               <strong>Error !</strong>  @TempData["Message"]
+                           </div>
+                       </div>
+                    }
                 </form>
             </div>
         </div>
     </div>
 
- <!--===============================================================================================-->
- <script src="~/vendor/jquery/jquery-3.2.1.min.js"></script>
- <!--===============================================================================================-->
- <script src="~/vendor/animsition/js/animsition.min.js"></script>
- <!--===============================================================================================-->
- <script src="~/vendor/bootstrap/js/popper.js"></script>
- <script src="~/vendor/bootstrap/js/bootstrap.min.js"></script>
- <!--===============================================================================================-->
- <script src="~/vendor/select2/select2.min.js"></script>
- <!--===============================================================================================-->
- <script src="~/vendor/daterangepicker/moment.min.js"></script>
- <script src="~/vendor/daterangepicker/daterangepicker.js"></script>
- <!--===============================================================================================-->
- <script src="~/vendor/countdowntime/countdowntime.js"></script>
- <!--===============================================================================================-->
- <script src="~/js/main.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/vendor/animsition/js/animsition.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/vendor/bootstrap/js/popper.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/vendor/daterangepicker/moment.min.js"></script>
+    <script src="~/vendor/daterangepicker/daterangepicker.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/vendor/countdowntime/countdowntime.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/js/main.js"></script>
 
 </body>
 </html>

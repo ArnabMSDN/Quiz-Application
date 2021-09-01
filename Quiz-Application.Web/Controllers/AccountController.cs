@@ -111,6 +111,12 @@ namespace Quiz_Application.Web.Controllers
                             _Controller = "Home";
                             _Action = "Index";
                         }
+                        else
+                        {
+                            TempData["Message"] = "Invalid User.";
+                            _Controller = "Account";
+                            _Action = "Login";
+                        }
                     }
                     else
                     {
@@ -118,7 +124,7 @@ namespace Quiz_Application.Web.Controllers
                         _Action = "Login";
                     }
                 }               
-                return RedirectToAction(_Action, _Controller);
+                return RedirectToAction(_Action, _Controller, ViewBag.Alert);
             }
             catch (Exception ex)
             {
