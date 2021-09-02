@@ -5,6 +5,8 @@
 $(document).ready(function () {
     
     var ExmID = 0;
+    var Score = null;
+    var Status = null;
     var QuestionID = 0;
     var AnswerID = 0;
     var Duration = 0;
@@ -13,6 +15,7 @@ $(document).ready(function () {
     var objData = [];
     var result = [];
     var checkTime = [];
+    var objReport = null;
 
     $('#ddlExam').prop('disabled', false);
     $('#btnStart').prop('disabled', false);
@@ -21,6 +24,8 @@ $(document).ready(function () {
     $('#eqMain button.w3-left').prop('disabled', true);
     $('#eqMain button.w3-right').prop('disabled', true);
     $("#eqReport").children().prop('disabled', true);
+    $('#eqReport a').removeAttr("href");
+    $('#eqReport i').addClass("w3-opacity-max");
     $("#eqScore").children().prop('disabled', true);
 
     $.ajax({
@@ -28,8 +33,8 @@ $(document).ready(function () {
         url: "/api/Exams",
         data: "{}",
         success: function (data) {
-            var string = '<option value="-1">--- Please Select ---</option>';
-            for (var i = 0; i < data.length; i++) { string += '<option value="' + data[i].examID + '">' + data[i].name + '</option>'; }
+           var string = '<option value="-1">--- Please Select ---</option>';
+           for (var i = 0; i < data.length; i++) { string += '<option value="' + data[i].examID + '">' + data[i].name + '</option>'; }
             $("#ddlExam").html(string);
         }
     });
@@ -182,6 +187,8 @@ $(document).ready(function () {
                                  stop(checkTime);
                                  $('#btnSubmit').prop('disabled', true);
                                  $("#eqReport").children().prop('disabled', false);
+                                 $("#eqReport a").attr("href", "/Score/Result");
+                                 $('#eqReport i').removeClass("w3-opacity-max");
                                  $.alert({
                                      type: 'green',
                                      title: 'Success !',
@@ -195,6 +202,8 @@ $(document).ready(function () {
                              else {
                                  $('#btnSubmit').prop('disabled', false);
                                  $("#eqReport").children().prop('disabled', true);
+                                 $('#eqReport a').removeAttr("href");
+                                 $('#eqReport i').addClass("w3-opacity-max");
                                  $.alert({
                                      type: 'red',
                                      title: 'Error !',
@@ -221,16 +230,49 @@ $(document).ready(function () {
             CandidateID: $('#hdnCandidateID').val(),            
             SessionID: $(this).closest("tr").find('td:eq(1)').text()            
         };
+        Score = $(this).closest("tr").find('td:eq(4)').text();
+        Status = $(this).closest("tr").find('td:eq(6)').text();
         $.post('/api/Report/', { argRpt: request },
-            function (data) {                
-                $('div#eqScore h3').html(data[0].exam+' Test');
-                $('div#eqScore .w3-container p:eq(0)').html('<strong>Candidate ID:</strong> ' + data[0].candidateID);                
+            function (data) {
+                objReport = data;
+                $('div#eqScore h3').html(data[0].exam + ' Test');
+                $('div#eqScore .w3-container p:eq(0)').html('<strong>Candidate ID:</strong> ' + data[0].candidateID);
                 $('div#eqScore .w3-container h5').html(data[0].message);
                 $('div#eqScore .w3-container span').html('<strong>Date:</strong> ' + data[0].date);
-                $("#eqScore").children().prop('disabled', false);
+                if (Status == "1") {
+                    $("#eqScore").children().prop('disabled', false);
+                }
+                else {
+                    Score = null;
+                    objReport = null;
+                    $("#eqScore").children().prop('disabled', true);
+                }
             });
     });
 
+    $('#btnReport').click(function () {
+        //console.log(objReport);
+        var scoreFormat = {
+            ExamID: objReport[0].examID,
+            CandidateID: $('#hdnCandidateID').val(),
+            SessionID: objReport[0].sessionID,
+            Exam: objReport[0].exam,
+            Date: objReport[0].date,
+            Score: Score
+        };
+        //console.log(scoreFormat);
+        $.post('/api/CreatePDF/', { argPDFRpt:scoreFormat},
+           function (data) {
+                //console.log(data);
+                if (data.isSuccess = true) { window.open(data.path, '_blank'); }
+           });       
+    });
+
+    $('#chooseFile').change(function () {
+      var file = $('#chooseFile')[0].files[0].name;
+      $('#noFile').text(file);
+    });
+    
     function UpdateItem(QuestionID) {
         for (var i in result) {
             if (result[i].QuestionID == QuestionID) {               
@@ -296,10 +338,16 @@ $(document).ready(function () {
 
 });
 
-//$('#chooseFile').change(function () {
-//    var file = $('#chooseFile')[0].files[0].name;
-//    $('#noFile').text(file);
-//});
+//Image Upload Preview  
+function ShowImagePreview(input) {
+   if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#imgCandidate').prop('src', e.target.result);
+        };
+        reader.readAsDataURL(input.files[0]);
+   }
+}
 
 //function SaveImage() {
 //    var formData = new FormData();
@@ -319,16 +367,7 @@ $(document).ready(function () {
 //    });
 //}
 
-////Image Upload Preview  
-//function ShowImagePreview(input) {
-//    if (input.files && input.files[0]) {
-//        var reader = new FileReader();
-//        reader.onload = function (e) {
-//            $('#imgProfile').prop('src', e.target.result);
-//        };
-//        reader.readAsDataURL(input.files[0]);
-//    }
-//}
+
 
 
 

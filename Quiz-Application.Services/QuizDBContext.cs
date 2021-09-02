@@ -21,13 +21,13 @@ namespace Quiz_Application.Services
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Attempt>(eb =>
+            modelBuilder.Entity<QuizAttempt>(eb =>
             {
                 eb.HasNoKey();
                 eb.ToView(null);
             });
 
-            modelBuilder.Entity<Report>(eb =>
+            modelBuilder.Entity<QuizReport>(eb =>
             {
                 eb.HasNoKey();
                 eb.ToView(null);

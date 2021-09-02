@@ -173,16 +173,24 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="form-check-label"><input type="checkbox" asp-for="Policy" required="required" /> I accept the <a asp-action="Privacy" asp-controller="Home">Terms of Use</a> &amp; <a asp-action="Privacy" asp-controller="Home">Privacy Policy</a></label>
+                <label class="form-check-label"><input type="checkbox" asp-for="Policy" required="required" /> I accept the <a href="https://www.cognizant.com/about-cognizant-resources/code-of-ethics.pdf">Terms of Use &amp; Privacy Policy</a></label>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
             </div>
         </form>
-        <div class="form-group">@Html.Raw(@ViewBag.Alert)</div>
-        <div class="text-center">Already have an account? <a asp-controller="Account" asp-action="Login">Login here</a></div>
+        @if (TempData["Message"] != null)
+        {
+            <div class="form-group">
+                <div class="alert alert-danger alert-dismissible">
+                    <a class="close" data-dismiss="alert" aria-label="close">×</a>
+                    <strong>Error !</strong>  @TempData["Message"]
+                </div>
+            </div>
+        }
+            <div class="text-center">Already have an account? <a asp-controller="Account" asp-action="Login">Login here</a></div>
 
-    </div>
+        </div>
 
 </body>
 </html>
