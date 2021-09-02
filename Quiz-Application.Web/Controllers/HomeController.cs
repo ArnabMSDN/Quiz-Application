@@ -35,12 +35,7 @@ namespace Quiz_Application.Web.Controllers
             IQueryable<Candidate> iqCandidate = await _candidate.SearchCandidate(e => e.Sl_No.Equals(objHis.Sl_No));
             Candidate objCandidate = iqCandidate.FirstOrDefault();
             return View(objCandidate);
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+        }       
 
         [BasicAuthentication]
         public async Task<IActionResult> Profile()
@@ -79,23 +74,24 @@ namespace Quiz_Application.Web.Controllers
                         UniqueFileName = Guid.NewGuid().ToString() + "_" + argObj.file.FileName;
                         UploadPath = Path.Combine(UploadFolder, UniqueFileName);
                     }
-
-                    Candidate _objCandidate = await _candidate.GetCandidate(argObj.Sl_No);
-                    argObj.ImgFile = UniqueFileName;
+                    Candidate _objCandidate = await _candidate.GetCandidate(argObj.Sl_No);       
                     _objCandidate.Name = argObj.Name;
                     _objCandidate.Candidate_ID = argObj.Candidate_ID;
                     _objCandidate.Phone = argObj.Phone;
                     _objCandidate.Email = argObj.Email;
-                    _objCandidate.ImgFile = UniqueFileName;
+                    if (UniqueFileName != null)
+                    { _objCandidate.ImgFile = UniqueFileName; }
+                    else
+                    { _objCandidate.ImgFile = _objCandidate.ImgFile; }
                     _objCandidate.ModifiedBy = argObj.Name;
                     _objCandidate.ModifiedOn = DateTime.Now;
-                                       
+                    argObj.ImgFile = _objCandidate.ImgFile;
                     i = await _candidate.UpdateCandidate(_objCandidate);
                     if (i > 0)
                     {
                         if (argObj.file != null)
                         {
-                            await argObj.file.CopyToAsync(new FileStream(UploadPath, FileMode.Create));
+                        await argObj.file.CopyToAsync(new FileStream(UploadPath, FileMode.Create));
                         }                        
                         ViewBag.Alert = AlertExtension.ShowAlert(Alerts.Success, "Profile updated successfully.");
                     }
@@ -110,7 +106,6 @@ namespace Quiz_Application.Web.Controllers
             }
             else
                 ModelState.AddModelError("Error","Unknown  Error.");
-
             
             return View(argObj);
         }

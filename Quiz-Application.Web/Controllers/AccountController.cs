@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Quiz_Application.Web.Models;
 using Quiz_Application.Web.Extensions;
 using Quiz_Application.Web.Enums;
+using Quiz_Application.Services.Entities;
 using Quiz_Application.Services.Repository.Interfaces;
 
 
@@ -29,6 +30,10 @@ namespace Quiz_Application.Web.Controllers
         [AllowAnonymous]
         public IActionResult Register()
         {
+            if (TempData["Message"] != null)
+            {
+                TempData["Message"] = null;
+            }
             return PartialView("_Register");
         }
 
@@ -37,28 +42,42 @@ namespace Quiz_Application.Web.Controllers
         public async Task<IActionResult> Register([FromForm] RegisterViewModel objCollection)
         {
             int i = 0;
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                Services.Entities.Candidate _objcandidate = new Services.Entities.Candidate()
+                try
                 {
-                    Name = objCollection.Name,
-                    Email = objCollection.Email,
-                    Phone = objCollection.Phone,
-                    Candidate_ID = objCollection.Candidate_ID,
-                    Roles = "User",
-                    Password = objCollection.Password.EncodeBase64(),
-                    CreatedBy = "SYSTEM",
-                    CreatedOn = DateTime.Now
-                };
-                
-                i = await _candidate.AddCandidate(_objcandidate);
+                    IQueryable<Candidate> _iqCandidate = await _candidate.SearchCandidate(e => e.Candidate_ID.Equals(objCollection.Candidate_ID));
+                    if (!_iqCandidate.Any())
+                    {
+                        Services.Entities.Candidate _objcandidate = new Services.Entities.Candidate()
+                        {
+                            Name = objCollection.Name,
+                            Email = objCollection.Email,
+                            Phone = objCollection.Phone,
+                            Candidate_ID = objCollection.Candidate_ID,
+                            Roles = "User",
+                            Password = objCollection.Password.EncodeBase64(),
+                            CreatedBy = "SYSTEM",
+                            CreatedOn = DateTime.Now
+                        };
 
-                if (i > 0)                
-                    return RedirectToAction("Login", "Account");                
-                else                 
-                    ViewBag.Alert = AlertExtension.ShowAlert(Alerts.Danger, "Unknown error");                
-            }                                       
-            return PartialView("_Register");            
+                        i = await _candidate.AddCandidate(_objcandidate);
+
+                        if (i > 0)
+                            return RedirectToAction("Login", "Account");
+                        else
+                            TempData["Message"] = "An error occurred.";
+                    }
+                    else
+                        TempData["Message"] = "A user already exists with that Candidate ID.";
+                }
+                catch (Exception ex)
+                {
+                    TempData["Message"] = ex.Message;
+                    throw new Exception(ex.Message, ex.InnerException);
+                }
+            }
+            return PartialView("_Register");
         }
 
         // GET: AccountController
@@ -76,7 +95,6 @@ namespace Quiz_Application.Web.Controllers
                     return PartialView("_Login");
                 else
                     return RedirectToAction("Index", "Home");
-
             }
             catch (Exception ex)
             {
@@ -97,7 +115,7 @@ namespace Quiz_Application.Web.Controllers
                 string _Controller = string.Empty;
                 string value = Convert.ToString(HttpContext.Session.GetString("AuthenticatedUser"));
 
-                if(ModelState.IsValid)
+                if (ModelState.IsValid)
                 {
                     if (string.IsNullOrEmpty(value))
                     {
@@ -123,12 +141,12 @@ namespace Quiz_Application.Web.Controllers
                         _Controller = "Account";
                         _Action = "Login";
                     }
-                }               
+                }
                 return RedirectToAction(_Action, _Controller, ViewBag.Alert);
             }
             catch (Exception ex)
             {
-               throw new Exception(ex.Message, ex.InnerException);
+                throw new Exception(ex.Message, ex.InnerException);
             }
             finally
             {
@@ -143,7 +161,7 @@ namespace Quiz_Application.Web.Controllers
                 foreach (var cookie in Request.Cookies.Keys)
                 {
                     Response.Cookies.Delete(cookie);
-                }               
+                }
                 HttpContext.Session.Clear();
                 return RedirectToAction("Login", "Account");
             }
@@ -152,8 +170,48 @@ namespace Quiz_Application.Web.Controllers
                 throw new Exception(ex.Message, ex.InnerException);
             }
             finally
-            { 
+            {
             }
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Reset()
+        {
+            if (TempData["Message"] != null)
+            {
+                TempData["Message"] = null;
+            }
+            return PartialView("_Reset");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Reset([FromForm] ResetViewModel objCollection)
+        {
+            if (ModelState.IsValid)
+            {
+                int i = 0;
+                IQueryable<Candidate> _iqCandidate = await _candidate.SearchCandidate(e => e.Email.Equals(objCollection.Email));
+                if (_iqCandidate.Any())
+                {
+                    Candidate objCandidate = _iqCandidate.FirstOrDefault();
+                    objCandidate.Password = objCollection.Password.EncodeBase64();
+                    objCandidate.ModifiedBy = objCollection.Email;
+                    objCandidate.ModifiedOn = DateTime.Now;
+                   
+                    i = await _candidate.UpdateCandidate(objCandidate);
+
+                    if (i > 0)
+                        return RedirectToAction("Login", "Account");
+                    else
+                        TempData["Message"] = "An error occurred.";
+                }
+                else
+                    TempData["Message"] = "Invalid Email.";
+            }
+            return PartialView("_Reset");
+        }
+
     }
 }
