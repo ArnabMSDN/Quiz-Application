@@ -7,7 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="bundleconfig.json" />
+    <Content Remove="wwwroot\js\site.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="libwkhtmltox.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\site.min.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,6 +49,11 @@
   <ItemGroup>
     <Folder Include="wwwroot\UploadedFiles\Video\" />
     <Folder Include="wwwroot\UploadedFiles\Report\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="bundleconfig.json" />
+    <None Include="wwwroot\js\site.min.js" />
   </ItemGroup>
 
 </Project>
