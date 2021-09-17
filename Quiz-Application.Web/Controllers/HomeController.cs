@@ -116,37 +116,19 @@ namespace Quiz_Application.Web.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> SaveImage()
-        //{
-        //    try
-        //    {
-        //        if (Request.Form.Files.Any())
-        //        {
-        //            string candidateID = Convert.ToString(Request.Form["Candidate-ID"]);
-        //            var file = Request.Form.Files["Candidate-Img"];
-
-        //            IQueryable<Services.Entities.Candidate> candidate = await _candidate.SearchCandidate(x => x.Candidate_ID == candidateID.DecodeBase64());
-        //            if (candidate.Any())
-        //            {
-        //                string UploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "UploadedFiles/Image");
-        //                string UniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
-        //                string UploadPath = Path.Combine(UploadFolder, UniqueFileName);
-        //                var item = candidate.FirstOrDefault();
-        //                item.ImgFile = UniqueFileName;
-        //                await _candidate.UpdateCandidate(item);
-        //                await file.CopyToAsync(new FileStream(UploadPath, FileMode.Create));
-        //            }
-        //        }
-        //        return Json(HttpStatusCode.OK);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception(ex.Message, ex.InnerException);
-        //    }
-        //    finally
-        //    { }
-        //}
+        [HttpPost]
+        public async Task<IActionResult> SaveRecoredFile()
+        {
+            if (Request.Form.Files.Any())
+            {
+                var file = Request.Form.Files["video-blob"];
+                string UploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "UploadedFiles/Video");
+                string UniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName + ".webm";
+                string UploadPath = Path.Combine(UploadFolder, UniqueFileName);
+                await file.CopyToAsync(new FileStream(UploadPath, FileMode.Create));
+            }
+            return Json(HttpStatusCode.OK);
+        }
 
     }
 }
