@@ -43,8 +43,8 @@ namespace Quiz_Application.Services.Repository.Base
 				END AS 'Status'
                 FROM Result R
                 LEFT JOIN Exam E ON R.ExamID = E.ExamID
-                WHERE R.CandidateID = '801894' AND R.IsCorrent = 1
-                GROUP BY R.SessionID, R.ExamID, E.Name, E.FullMarks, R.CreatedOn", argCandidateID).ToListAsync();
+                WHERE R.CandidateID ='" + argCandidateID + "' AND R.IsCorrent = 1"
+                +"GROUP BY R.SessionID, R.ExamID, E.Name, E.FullMarks, R.CreatedOn", argCandidateID).ToListAsync();
                 return obj;
             }
             catch (Exception ex)
